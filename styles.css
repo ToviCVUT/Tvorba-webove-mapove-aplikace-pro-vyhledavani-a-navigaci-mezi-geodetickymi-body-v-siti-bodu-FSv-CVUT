@@ -36,4 +36,5 @@ nav ul {
     justify-content: space-around;
     text-align: center;
     list-style: none;
+    background: gray;
 }
