@@ -4,3 +4,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map) // mapový podklad OSM-TOPO
+
+L.control.scale({
+  position: "topright",
+  metric: true,
+  imperial: false,
+}).addTo(map)

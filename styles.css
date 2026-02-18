@@ -44,3 +44,28 @@ nav ul {
     background: gray;
     width: 100%;
 }
+
+
+/* LEAFLET */
+.leaflet-control-scale {
+    font-size: 0.75rem;
+    font-size: 0.75rem;
+}
+    
+
+.leaflet-control-scale-line {
+    background: rgba(255, 255, 255, 0.573);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    text-shadow: none;
+    min-width: 75px;
+    height: 20px;
+    margin: 15px;
+    border: 2px solid rgb(0, 0, 0);
+    border-top: none;
+    
+}
+
+.leaflet-control-scale .scale-value {
+    font-size: 50px;
+}
