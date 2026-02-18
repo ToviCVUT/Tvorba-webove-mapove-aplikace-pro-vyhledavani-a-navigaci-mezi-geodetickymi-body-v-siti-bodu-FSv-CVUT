@@ -27,6 +27,11 @@ nav {
     height: 60px;
     width: 100%;
     padding-bottom: env(safe-area-inset-bottom);
+    display: flex;
+    align-items: center;
+   
+    
+    
     
 }
 
@@ -34,7 +39,7 @@ nav ul {
     display: flex;
     margin: 0;
     justify-content: space-around;
-    text-align: center;
     list-style: none;
     background: gray;
+    width: 100%;
 }
