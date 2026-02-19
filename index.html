@@ -11,29 +11,99 @@
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
      <link href="styles.css" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"> 
 </head>
 <body>
-    <header>
+    
+        <header>
+            <div class="searchingPanel">
+                <input class="searching" id="searching" type="search" placeholder="Vyhledat geodetický bod">
+                <button class="searchBtn" id="searchBtn" type="submit">
+                    <svg viewBox="0 0 22 22" width="20" height="20">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <line x1="16" y1="16" x2="22" y2="22" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
 
-    </header>
 
+        <main>
+            <div id="map">
+                <div class="uiButtons">
+                    <button class = uiBtn id="gpsBtn" type="button">
+                        <svg width="24" height="24" viewBox="0 0 23 21" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <line x1="12" y1="2" x2="12" y2="6"/>
+                            <line x1="12" y1="18" x2="12" y2="22"/>
+                            <line x1="2" y1="12" x2="6" y2="12"/>
+                            <line x1="18" y1="12" x2="22" y2="12"/>
+                        </svg>
 
-    <main>
-        <div id="map"></div>
-    </main>
-        
+                    </button>
+                    <button class = uiBtn id="panoramaBtn" type="button"><p>360°</p></button>
+                </div>
+            </div>
+        </main>
+            
 
-    <footer>
-        <nav class="menu">
-            <ul>
-                <li>IKONA1</li>
-                <li>IKONA2</li>
-                <li>IKONA3
-                </li>
-            </ul>
-        </nav>
-    </footer>
+        <footer>
+            <nav class="menu">
+                    <button class="navBtn" id="layersBtn" type="button">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <path d="M12 3 3 8l9 5 9-5-9-5Z"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linejoin="round"/>
+                            <path d="M3 12l9 5 9-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linejoin="round"/>
+                            </svg>
+                    </button>
+                    
+                    <button class="navBtn" id="supportBtn" type="button">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <circle cx="12" cy="12" r="10"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"/>
 
+                            <path d="M10 9.5a2.5 2.5 0 1 1 3.5 2.3c-.9.4-1.5.9-1.5 2.2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"/>
+
+                            <circle cx="12" cy="17.5" r="1"
+                                    fill="currentColor"/>
+
+                        </svg>
+                    </button>
+
+                    <button class="navBtn" id="settingsBtn" type="button">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <circle cx="12" cy="12" r="3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"/>
+
+                            <path d="M12 3v2.5M12 18.5V21
+                                    M5.6 5.6l1.8 1.8
+                                    M16.6 16.6l1.8 1.8
+                                    M3 12h2.5
+                                    M18.5 12H21
+                                    M5.6 18.4l1.8-1.8
+                                    M16.6 7.4l1.8-1.8"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"/>
+                        </svg>
+                    </button>
+            </nav>
+        </footer>
     <script src="leaflet.js"></script>
 </body>
 </html>
