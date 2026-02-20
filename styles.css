@@ -42,11 +42,12 @@ nav .navBtn {
     min-width: 33.33%;
     border: none;
     color: white;
-}
+    transition: background 0.2s ease;
+    }
 
-nav .navBtn:hover {
+nav .navBtn:active {
     padding: 0px;
-    background: rgba(132, 125, 125, 0.816);
+    background: rgb(6, 6, 6);
     min-height: 100%;
     min-width: 33.33%;
     border: none;
@@ -77,16 +78,17 @@ nav button svg {
     border: none;
     background: rgba(255, 255, 255, 0.855);
     box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.237); 
+    transition: background 0.2s ease-out;
 }
 
 
-.uiBtn:hover {
+.uiBtn:active {
     min-width: 45px;
     min-height: 45px;
     z-index: 1000;
     border-radius: 50%;
     border: none;
-    background: rgba(227, 227, 227, 0.855);
+    background: rgba(156, 156, 156, 0.855);
     box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.237); 
 
 }
