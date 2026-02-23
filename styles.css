@@ -139,20 +139,24 @@ nav button svg {
 }
 
 /* HEADER */
+
 .searchingPanel {
     display: flex;
+    flex-direction: column;
     position: absolute;
     z-index: 1000;
     top: 3%;
-    left: 54%;
+    left: 50%;
     transform: translateX(-50%);
 }
 
-.searching {
+.searchingInput {
     background: white;
     border-radius: 15px;
     min-width: 350px;
     min-height: 40px;
+    width: 350px;
+    height: 40px;
     padding-left: 10px;
     border: none;
     box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.237);
@@ -160,14 +164,42 @@ nav button svg {
 
 .searchBtn {
     position: relative;
-    right: 12%;
+    right: 52%;
     min-width: 35px;
     min-height: 35px;
+    height: 35px;
+    width: 35px;
     background: white;
     border: none;
     color: black
 }
 
-.searching:focus {
+.searchingInput:focus {
     outline: none;
+    background: white;
+}
+
+.searchingPointsList {
+    position: absolute;
+    top: 61%;              
+    width: 350px;                   
+    max-height: 250px;
+    padding: 0;
+    list-style: none;
+    overflow-y: auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    z-index: 1000; 
+}
+
+.searchingPointsList li {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
 }

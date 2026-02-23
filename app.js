@@ -1,7 +1,8 @@
 // MAP //
 
+
 // inicializace mapy
-const map = L.map("map", { maxZoom: 21, minZoom: 15}).setView([50.1040097, 14.3890886], 16); 
+const map = L.map("map", { maxZoom: 21}).setView([50.1040097, 14.3890886], 16); 
 
 // mapový podklad OSM-TOPO
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -75,10 +76,16 @@ positionBtn.addEventListener("click", () => {
   map.setView(lastLatLng)
 });
 
+
 // DATA //
+let allPoints = [];
+
+
 fetch("Data/points/Points_WGS84.geojson")
   .then(res => res.json())
   .then(data => {
+    allPoints = data.features
+    console.log(allPoints)
     L.geoJSON(data, {
       onEachFeature: (feature, layer) => {
 
@@ -98,5 +105,33 @@ fetch("Data/points/Points_WGS84.geojson")
       } 
 
     }).addTo(map)});
+    
+    
+    // SEARCHING INPUT
+    const searchingInput = document.getElementById("searchingInput")
+    const searchingPointsList = document.getElementById("searchingPointsList")
 
+    searchingInput.addEventListener("input", () => {
+      const inputValue = searchingInput.value.toLowerCase();
+      searchingPointsList.innerHTML = ""
+
+      if(inputValue.length === 0) return
+
+      const filteredPoints = allPoints.filter(point => 
+        point.properties.ID.toString().toLowerCase().startsWith(inputValue))
+
+      filteredPoints.forEach(point => {
+       const filteredPoint = document.createElement("li")
+        filteredPoint.textContent = point.properties.ID
+        
+        filteredPoint.addEventListener("click", () => {
+          const [filteredPointLat, filteredPointLng] = point.geometry.coordinates;
+        map.setView([filteredPointLng, filteredPointLat])
+        searchingPointsList.innerHTML = ""}
+        )
+
+        searchingPointsList.appendChild(filteredPoint)
+      })
+    })
+    
 
