@@ -3,6 +3,7 @@ html, body {
     padding: 0;
     margin: 0;
     font-family: "Inter", sans-serif;
+    box-sizing: border-box;
 }
 
 body {
@@ -202,4 +203,27 @@ nav button svg {
     border-bottom: 1px solid #eee;
 }
 
+.straightNavigationBtn {
+    background: yellow;
+}
+
+.straightDistanceResult {
+    display: flex;
+    width: auto;
+    height: 30px;
+    position: absolute;
+    z-index: 1000;
+    top: 90%;
+    left: 67%;
+    background-color: rgba(255, 255, 255, 0.573);
+    padding: 0 5px 0 5px;
+    align-items: center;
+    border: 1px solid blue;
+    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.237);
+
+}
+
+.straightDistanceResultText{
+    color: rgb(0, 0, 0);
+    
 }

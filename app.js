@@ -1,5 +1,14 @@
 // MAP //
+let positionMarker = null;
+let lastLatLng = null;
+let centerDistance = null;
 
+let allPoints = [];
+let straightDistance = null;
+let straightLine = null;
+let selectedPointNav = null;
+let selectedPointNavID = null;
+const straightDistanceResult = document.getElementById("straightDistanceResult");
 
 // inicializace mapy
 const map = L.map("map", { maxZoom: 21}).setView([50.1040097, 14.3890886], 16); 
@@ -20,10 +29,25 @@ L.control.scale({
   imperial: false,
 }).addTo(map); // měřítko
 
+
+// funkce aktualizace přímé spojnice funkce
+const updateStraightLine = (lastLatLng, selectedPointNav) => {
+  if (!lastLatLng || !selectedPointNav) return
+   let straightDistanceRound = straightDistance.toFixed(1).replace(".", ",") 
+  straightDistanceResult.innerHTML = ""
+  straightDistanceResult.innerHTML = `<p class="straightDistanceResultText"><em>Straight ${selectedPointNavID}<em>: <b>${straightDistanceRound} m</b></p>`
+
+  const lastPosition = L.latLng(lastLatLng)
+
+  if (!straightLine) {
+    straightLine = L.polyline ([selectedPointNav, lastPosition]).addTo(map)
+  } else {
+    straightLine.setLatLngs([selectedPointNav, lastPosition])
+  };
+};
+
 // poloha uživatele + GPS button
-let positionMarker = null
-let lastLatLng = null
-let centerDistance = null
+
 const positionBtn = document.getElementById("gpsBtn")
 
 navigator.geolocation.watchPosition(position => {
@@ -42,11 +66,19 @@ navigator.geolocation.watchPosition(position => {
     positionMarker.setLatLng(lastLatLng)
   };
 
-  // odchylka centra mapy od polohy uživatele
+  updateStraightLine(lastLatLng, selectedPointNav);
+});
+
+// GPS button
+positionBtn.addEventListener("click", () => {
+  map.setView(lastLatLng)
+});
+
+ // odchylka centra mapy od polohy uživatele
   map.on("moveend", () => {
     if (lastLatLng){
     centerDistance = map.getCenter().distanceTo(lastLatLng);
-    console.log(centerDistance)};
+    /*console.log(centerDistance)*/};
 
   if (centerDistance <= 0.5 && map.getZoom() >= 20){
     positionBtn.style.background = "rgba(0, 166, 255, 0.8)";
@@ -65,20 +97,12 @@ navigator.geolocation.watchPosition(position => {
   }});
 
   // sledování zoomu mapy
-  map.on("zoomend", () => {
+  /*map.on("zoomend", () => {
     console.log(map.getZoom())
-  })
-  
-});
-
-// GPS button
-positionBtn.addEventListener("click", () => {
-  map.setView(lastLatLng)
-});
+  })*/
 
 
 // DATA //
-let allPoints = [];
 
 
 fetch("Data/points/Points_WGS84.geojson")
@@ -99,11 +123,26 @@ fetch("Data/points/Points_WGS84.geojson")
          X: <em>${X}</em> m<br>
          Y: <em>${Y}</em> m<br>
          Z: <em>${p.Z}</em> m<br>
-         Typ: ${p.typ}
+         Typ: ${p.typ} <br>
+        <button class="straightNavigationBtn" type="button">Přímá vzdálenost</button>
           `
         )
-      } 
 
+        layer.on("popupopen", (e) => {
+          const layerPopup = e.popup.getElement();
+          const straightNavBtn = layerPopup.querySelector(".straightNavigationBtn");
+
+          straightNavBtn.addEventListener("click", () => {
+            selectedPointNav = e.target.getLatLng();
+            selectedPointNavID = p.ID
+            const lastPosition = L.latLng(lastLatLng);
+            straightDistance = lastPosition.distanceTo(selectedPointNav)
+            console.log(`Přímá vzdálenost: ${straightDistance}`)
+            updateStraightLine(lastLatLng, selectedPointNav)
+            console.log("klik")
+          }, {once: true})
+        })
+      } 
     }).addTo(map)});
     
     
