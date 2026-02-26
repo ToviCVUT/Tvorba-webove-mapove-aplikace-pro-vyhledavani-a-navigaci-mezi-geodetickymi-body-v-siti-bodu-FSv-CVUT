@@ -1,14 +1,18 @@
 // MAP //
 let positionMarker = null;
+let userLat = null
+let userLng = null
 let lastLatLng = null;
 let centerDistance = null;
 
 let allPoints = [];
-let straightDistance = null;
 let straightLine = null;
 let selectedPointNav = null;
 let selectedPointNavID = null;
 const straightDistanceResult = document.getElementById("straightDistanceResult");
+
+let zones = null
+let activeZone = null;
 
 // inicializace mapy
 const map = L.map("map", { maxZoom: 21}).setView([50.1040097, 14.3890886], 16); 
@@ -30,34 +34,75 @@ L.control.scale({
 }).addTo(map); // měřítko
 
 
-// funkce aktualizace přímé spojnice funkce
+// funkce AKTUALIZACE PŘÍMÉ SPOJNICE
 const updateStraightLine = (lastLatLng, selectedPointNav) => {
   if (!lastLatLng || !selectedPointNav) return
-   let straightDistanceRound = straightDistance.toFixed(1).replace(".", ",") 
-  straightDistanceResult.innerHTML = ""
-  straightDistanceResult.innerHTML = `<p class="straightDistanceResultText"><em>Straight ${selectedPointNavID}<em>: <b>${straightDistanceRound} m</b></p>`
 
-  const lastPosition = L.latLng(lastLatLng)
+  const lastPosition = L.latLng(lastLatLng);
+  const straightDistance = lastPosition.distanceTo(selectedPointNav);
+  console.log(straightDistance)
 
+   let straightDistanceRound = straightDistance.toFixed(0).replace(".", ",")
+
+  straightDistanceResult.innerHTML = "";
+  straightDistanceResult.innerHTML = `<button id="straightDistanceResultEndBtn">X</button><p class="straightDistanceResultText"><em>SD ${selectedPointNavID}</em>: <b>${straightDistanceRound} m</b></p>`
+  
   if (!straightLine) {
     straightLine = L.polyline ([selectedPointNav, lastPosition]).addTo(map)
   } else {
     straightLine.setLatLngs([selectedPointNav, lastPosition])
   };
+
+  const straightDistanceResultEndBtn = document.getElementById("straightDistanceResultEndBtn")
+  straightDistanceResultEndBtn.addEventListener("click", ()=> {
+    straightDistanceResult.innerHTML = "";
+    straightLine.remove();
+    straightLine = null
+  })
 };
 
-// poloha uživatele + GPS button
 
-const positionBtn = document.getElementById("gpsBtn")
+// funkce jestli je BOD V OBLASTI
+    const georeference = () => {
+      if (!zones || userLng == null || userLat == null) return;
+
+      const lastPosition = turf.point([userLng, userLat]);
+
+
+      zones.features.forEach(zone => {
+        if (turf.booleanPointInPolygon(lastPosition, zone)){
+          activeZone = zone;
+        }
+      })
+
+      const panoramaBtn = document.getElementById("panoramaBtn");
+
+      if (activeZone) {
+        panoramaBtn.disabled = false;
+        console.log(activeZone.properties.location);
+      } else {
+        panoramaBtn.disabled = true;
+        console.log("Mimo oblasti.");
+      }
+
+      const currentZone = document.getElementById("currentZone");
+      if (activeZone) {
+      currentZone.textContent = `current zone: ${activeZone.properties.location}`}
+      else {currentZone.textContent = `current zone: Out of any zones`}
+      
+    }
+
+// SLEDOVÁNÍ POLOHY UŽIVATELE
+const positionBtn = document.getElementById("gpsBtn");
 
 navigator.geolocation.watchPosition(position => {
   console.log(position.coords.accuracy); // přesnost
 
-  const lat = position.coords.latitude;
-  const lng = position.coords.longitude;
+  userLat = position.coords.latitude;
+  userLng = position.coords.longitude;
 
   // poslední poloha
-  lastLatLng = [lat, lng];
+  lastLatLng = [userLat, userLng];
 
   // vykreslení polohy
   if (positionMarker === null) {
@@ -67,7 +112,10 @@ navigator.geolocation.watchPosition(position => {
   };
 
   updateStraightLine(lastLatLng, selectedPointNav);
+  georeference();
 });
+
+
 
 // GPS button
 positionBtn.addEventListener("click", () => {
@@ -135,9 +183,6 @@ fetch("Data/points/Points_WGS84.geojson")
           straightNavBtn.addEventListener("click", () => {
             selectedPointNav = e.target.getLatLng();
             selectedPointNavID = p.ID
-            const lastPosition = L.latLng(lastLatLng);
-            straightDistance = lastPosition.distanceTo(selectedPointNav)
-            console.log(`Přímá vzdálenost: ${straightDistance}`)
             updateStraightLine(lastLatLng, selectedPointNav)
             console.log("klik")
           }, {once: true})
@@ -147,8 +192,17 @@ fetch("Data/points/Points_WGS84.geojson")
     
     
     // SEARCHING INPUT
+    const searchingPanel = document.getElementById("searchingPanel")
     const searchingInput = document.getElementById("searchingInput")
     const searchingPointsList = document.getElementById("searchingPointsList")
+
+    document.addEventListener("click", (e) => {
+      if(!searchingPanel.contains(e.target)) {
+        searchingPointsList.innerHTML = ""
+        searchingInput.value = ""
+
+      }
+    })
 
     searchingInput.addEventListener("input", () => {
       const inputValue = searchingInput.value.toLowerCase();
@@ -172,5 +226,16 @@ fetch("Data/points/Points_WGS84.geojson")
         searchingPointsList.appendChild(filteredPoint)
       })
     })
+
+
+    // OBLASTI pomocí knihovny Turf
+    fetch("Data/zones/Zones_WGS84.geojson")
+      .then(res => res.json())
+      .then(data => {
+        zones = data
+        console.log(zones)
+        L.geoJSON(zones).addTo(map)});
+
+    
     
 

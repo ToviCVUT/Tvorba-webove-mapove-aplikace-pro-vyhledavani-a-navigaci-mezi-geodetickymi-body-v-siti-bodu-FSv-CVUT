@@ -10,13 +10,14 @@
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
+     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
      <link href="styles.css" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet"> 
 </head>
 <body>
     
         <header>
-                <div class="searchingPanel">
+                <div class="searchingPanel" id="searchingPanel">
                     <input class="searchingInput" id="searchingInput" type="search" placeholder="Vyhledat geodetický bod" autocomplete="off">
                     <!--<button class="searchBtn" id="searchBtn" type="submit">
                         <svg viewBox="0 0 22 22" width="20" height="20">
@@ -33,7 +34,7 @@
             <div id="map">
                 <div class="straightDistanceResult" id="straightDistanceResult"></div>
                 <div class="uiButtons">
-                    <button class = uiBtn id="gpsBtn" type="button">
+                    <button class = "uiBtn panormaBtn" id="gpsBtn" type="button">
                         <svg width="24" height="24" viewBox="0 0 23 21" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="3"/>
                             <line x1="12" y1="2" x2="12" y2="6"/>
@@ -42,7 +43,8 @@
                             <line x1="18" y1="12" x2="22" y2="12"/>
                         </svg>
                     </button>
-                    <button class = uiBtn id="panoramaBtn" type="button"><p>360°</p></button>
+                    <button class = "uiBtn panoramBtn" id="panoramaBtn" type="button"><p>360°</p></button>
+                    <div class="currentZone" id="currentZone"></div>
                 </div>
             </div>
         </main>
