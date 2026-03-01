@@ -190,7 +190,8 @@ navigator.geolocation.watchPosition(position => {
 
   userLat = position.coords.latitude;
   userLng = position.coords.longitude;
-  positionAccuracy = position.coords.accuracy //přesnost
+  positionAccuracy = position.coords.accuracy; //přesnost
+  positionAccuracyRound = positionAccuracy.toFixed(0);
 
   // poslední poloha
   lastLatLng = [userLat, userLng];
@@ -214,16 +215,17 @@ navigator.geolocation.watchPosition(position => {
   // infPanel - kontrola oblasti
   georeference();
 
-  // infPanel - GPS přesnost
-  gpsAccuracy.innerHTML = `<p>GPS přesnost: <strong>± ${positionAccuracy} m</strong></p>`
-  
   // infPanel - přímá vzdálenost
   if(straightNavActive){
   updateUserPosition(lastLatLng, selectedPointNav)};
 
+  // infPanel - GPS přesnost
+  gpsAccuracy.innerHTML = `<p>GPS přesnost: <strong>± ${positionAccuracyRound} m</strong></p>`
+    },
+
     (err) =>{
     if(err.code === 1){
-      allert("Není povolena poloha uživatele")
+      alert("Není povolena poloha uživatele")
     }},
 
     {
@@ -231,7 +233,7 @@ navigator.geolocation.watchPosition(position => {
     maximumAge: 0,
     timeout: 30000
     }
-});
+);
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
