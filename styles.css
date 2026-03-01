@@ -317,9 +317,9 @@ nav button svg {
 }
 
 .selectedPointsBtn.active{
-    background: rgb(38, 242, 11);
-    color: white;
-    border: 2px solid #ffffffc8;
+    background: rgb(0, 254, 4);
+    color: #0d4a87;
+    border: 2px solid #0d4a87d4;
 }
 
 /* OBLASTI */

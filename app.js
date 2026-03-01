@@ -166,6 +166,20 @@ const pointSelect = (ID, isChecked) => {
   selectedPointsBtn.textContent = selectedPoints.size
 };
 
+
+// FUNKCE - změna barvy markeru polohy uživatele podle přesnosti GPS
+  const markerColorByAccuracy = (positionAccuracy) =>{
+    if(positionAccuracy <= 10) {
+      return "rgb(2, 131, 2)"
+    } else if (positionAccuracy <= 25){
+      return "rgb(54, 140, 197)"
+    } else if (positionAccuracy <= 50){
+      return "rgb(255, 157, 0)"
+    } else {
+      return "rgb(255, 0, 0)"
+    }
+  }
+
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 // SLEDOVÁNÍ POLOHY UŽIVATELE
@@ -181,12 +195,21 @@ navigator.geolocation.watchPosition(position => {
   // poslední poloha
   lastLatLng = [userLat, userLng];
 
+
   // vykreslení polohy
   if (positionMarker === null) {
-    positionMarker = L.marker(lastLatLng).addTo(map)
+    positionMarker = L.circleMarker(lastLatLng, {
+      radius: 8,
+      fillColor: markerColorByAccuracy(positionAccuracy),
+      color: "#fff",
+      weight: 4,
+      opacity: 0.8,
+      fillOpacity: 1,
+    }).addTo(map)
   } else {
-    positionMarker.setLatLng(lastLatLng)
+    positionMarker.setLatLng(lastLatLng).setStyle({fillColor: markerColorByAccuracy(positionAccuracy)})
   };
+
 
   // infPanel - kontrola oblasti
   georeference();
@@ -198,6 +221,16 @@ navigator.geolocation.watchPosition(position => {
   if(straightNavActive){
   updateUserPosition(lastLatLng, selectedPointNav)};
 
+    (err) =>{
+    if(err.code === 1){
+      allert("Není povolena poloha uživatele")
+    }},
+
+    {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: 30000
+    }
 });
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -289,8 +322,8 @@ fetch("Data/points/Points_WGS84.geojson")
           if(checkBox.checked){
             layer.setStyle({
               radius: 8,
-          fillColor: "rgb(38, 242, 11)",
-          color:"#fff"
+          fillColor: "rgb(0, 254, 4)",
+          color:"#0d4a87"
             })
           } else {
             layer.setStyle({
