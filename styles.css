@@ -17,6 +17,7 @@ main {
 }
 
 #map {
+    positon: relative;
     height: 100%;
     width: 100%;
     
@@ -168,9 +169,9 @@ nav button svg {
 .searchingInput {
     background: white;
     border-radius: 15px;
-    min-width: 350px;
+    min-width: 300px;
     min-height: 40px;
-    width: 350px;
+    width: 340px;
     height: 40px;
     padding-left: 10px;
     border: none;
@@ -197,7 +198,7 @@ nav button svg {
 .searchingPointsList {
     position: absolute;
     top: 61%;              
-    width: 350px;                   
+    width: 340px;                   
     max-height: 250px;
     padding: 0;
     list-style: none;
@@ -211,39 +212,114 @@ nav button svg {
 .searchingPointsList li {
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 50px;
     padding: 0 12px;
     cursor: pointer;
     border-bottom: 1px solid #eee;
+    z-index: 1000;
 }
 
 .straightNavigationBtn {
     background: yellow;
 }
 
-.straightDistanceResult {
-    display: flex;
-    width: auto;
-    height: 30px;
+
+
+.infBtn {
     position: absolute;
     z-index: 1000;
-    top: 90%;
-    left: 67%;
-    align-items: center;
+    background: #643be1c9;
+    width: 35px;
+    height: 35px;
+    top: 10%;
+    left: 88%;
+    border: 2px solid #ffffffc8;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.straightDistanceResultText{
-    color: rgb(0, 0, 0);
-    background-color: rgba(255, 255, 255, 0.573);
-    padding: 5px 5px 5px 5px;
-    border: 1px solid blue;
-    box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.237);
+
+.infPanel {
+    position: absolute;
+    z-index: 999;
+    background: white;
+    width: auto;
+    height: 80px;
+    padding: 5px 10px 5px 10px;
+    top: 10%;
+    left: 18%;
+    display: none;
+    flex-direction: column;
+    border: 2px solid black; 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+}
+
+.infPanel.active {
+    display: flex;
+    flex-direction: column;;
+}
+
+.straightDistanceResult {
+    display: flex;
+    flex-direction: row;
+    
+     
+}
+
+.currentZone p {
+    margin: 0;
+}
+
+.straightDistanceResult p {
+    margin: 0;
+}
+
+.rasterDistanceResult p {
+    margin: 0;
+}
+
+.gpsAccuracy p {
+    margin: 0;
+}
+
+.straightDistanceResultEndBtn {
+    color: red;
+    font-weight: bold;
+    font-size: 9px;
+    height: 15px;
+    width: 22px;
+    border-radius: 5px;
+    border: none;
+    margin-left: 5px;
+    
+}
+
+
+
+.selectedPointsBtn {
+    position: absolute;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.864);
+    width: 35px;
+    height: 35px;
+    top: 17%;
+    left: 88%;
+    border-radius: 5px;
+    border: 2px solid rgba(0, 0, 0, 0.418);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.selectedPointsBtn.active{
+    background: rgb(38, 242, 11);
+    color: white;
+    border: 2px solid #ffffffc8;
 }
 
 /* OBLASTI */
-.currentZone {
-    position: absolute;
-    z-index: 1000;
-    width: 300px;
-    height: auto
-}

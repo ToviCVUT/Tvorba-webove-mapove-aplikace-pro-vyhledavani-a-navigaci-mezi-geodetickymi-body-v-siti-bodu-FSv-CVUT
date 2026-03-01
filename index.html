@@ -32,7 +32,17 @@
 
         <main>
             <div id="map">
-                <div class="straightDistanceResult" id="straightDistanceResult"></div>
+            <section class="information">
+                <button class="infBtn" id="infBtn" type="button">i</button>
+                <div class="infPanel" id="infPanel">
+                    <div class="currentZone" id="currentZone">Aktuální zóna: načítání...</div>
+                    <div class="straightDistanceResult" id="straightDistanceResult"><p></P>Přímá vzdálenost (<em>bod</em>): --</p></div>
+                    <div class="rasterDistanceResult" id="straightDistanceResult"><p>Raster vzdálenost (<em>bod</em>): --</p></div>
+                    <div class="gpsAccuracy" id="gpsAccuracy"><p>GPS přesnost: načítání...</p></div>
+                </div>
+            </section>
+            <button type="button" class="selectedPointsBtn" id="selectedPointsBtn"></button>
+                
                 <div class="uiButtons">
                     <button class = "uiBtn panormaBtn" id="gpsBtn" type="button">
                         <svg width="24" height="24" viewBox="0 0 23 21" fill="none" stroke="currentColor" stroke-width="2">
@@ -44,7 +54,6 @@
                         </svg>
                     </button>
                     <button class = "uiBtn panoramBtn" id="panoramaBtn" type="button"><p>360°</p></button>
-                    <div class="currentZone" id="currentZone"></div>
                 </div>
             </div>
         </main>
