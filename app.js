@@ -5,6 +5,7 @@ let userLat = null
 let userLng = null
 let lastLatLng = null;
 let centerDistance = null;
+let userFollow = false;
 
 let allPoints = {};
 let layerID = {}
@@ -196,11 +197,16 @@ navigator.geolocation.watchPosition(position => {
   // poslední poloha
   lastLatLng = [userLat, userLng];
 
+  // sledování polohy uživatele
+  if(userFollow){
+    map.panTo(lastLatLng, {animate: true})
+  }
+
 
   // vykreslení polohy
   if (positionMarker === null) {
     positionMarker = L.circleMarker(lastLatLng, {
-      radius: 8,
+      radius: 9,
       fillColor: markerColorByAccuracy(positionAccuracy),
       color: "#fff",
       weight: 4,
@@ -239,8 +245,18 @@ navigator.geolocation.watchPosition(position => {
 
 // GPS BUTTON
 positionBtn.addEventListener("click", () => {
+  if(lastLatLng){
   map.setView(lastLatLng)
+  userFollow = true;
+  } else {
+    alert("Ještě nemám polohu.")
+  }
 });
+
+// ZRUŠENÍ SLEDOVÁNÍ POLOHY UŽIVATELE
+map.on("dragstart", () =>{
+  userFollow = false
+})
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -283,7 +299,7 @@ fetch("Data/points/Points_WGS84.geojson")
 
       pointToLayer: function (feature, latlng) {
         return L.circleMarker(latlng, {
-          radius: 6,
+          radius: 8,
           fillColor: "#0d4a87",   // modrá výplň
           color: "#ffffff",       // tmavší okraj
           weight: 1,              // tloušťka okraje
@@ -329,7 +345,7 @@ fetch("Data/points/Points_WGS84.geojson")
             })
           } else {
             layer.setStyle({
-            radius: 6,
+            radius: 8,
           fillColor: "#0d4a87",   
           color: "#ffffff"
             })
