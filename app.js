@@ -35,14 +35,32 @@ const selectedPointsBtn = document.getElementById("selectedPointsBtn")
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 // inicializace mapy
-const map = L.map("map", { maxZoom: 21}).setView([50.1040097, 14.3890886], 16); 
+const map = L.map("map").setView([50.1040097, 14.3890886], 16); 
 
 // mapový podklad OSM-TOPO
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
   maxZoom: 21,
   maxNativeZoom: 19,
-  attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map) 
+})
+
+ const ORTO = L.tileLayer(
+  'https://ags.cuzk.gov.cz/arcgis1/rest/services/ORTOFOTO_WM/MapServer/tile/{z}/{y}/{x}',
+  {
+    attribution: '© ČÚZK',
+    maxZoom: 17,
+    maxNativeZoom: 17,
+  }
+)
+
+let mapLayer = OSM
+const osmBtn = document.getElementById("layerOSMBtn")
+const ortoBtn = document.getElementById("layerOrtoBtn")
+
+
+
+
+
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -63,9 +81,44 @@ L.control.scale({
       .then(data => {
         zones = data
         console.log(zones)
-        L.geoJSON(zones).addTo(map)});
+        const zonesLayer = L.geoJSON(zones, {
+          opacity: 0,
+          fillOpacity: 0,
+        }).addTo(map)
+      });
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
+
+// FUNKCE ZMĚNA PODKLADU
+const switchLayers = () =>{
+  mapLayer.addTo(map)
+  if(osmBtn){
+    osmBtn.addEventListener("click", () => {
+      map.removeLayer(mapLayer)
+      mapLayer = OSM
+      mapLayer.addTo(map)
+      osmBtn.classList.add("select")
+      ortoBtn.classList.remove("select")
+    })
+  }
+
+  if(ortoBtn){
+    ortoBtn.addEventListener("click", () => {
+      
+      map.removeLayer(mapLayer)
+      mapLayer = ORTO
+      mapLayer.addTo(map)
+      ortoBtn.classList.add("select")
+      osmBtn.classList.remove("select")
+
+    })
+  }
+}
+
+
+switchLayers()
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // FUNKCE AKTUALIZACE POLOHY UŽIVATELE
 const updateUserPosition = (lastLatLng, selectedPointNav) => {
@@ -78,14 +131,16 @@ const updateUserPosition = (lastLatLng, selectedPointNav) => {
    let straightDistanceRound = straightDistance.toFixed(0).replace(".", ",")
   
   if (!straightLine) {
-    straightLine = L.polyline ([selectedPointNav, lastPosition]).addTo(map)
+    straightLine = L.polyline ([selectedPointNav, lastPosition], {
+      color: "rgba(96, 155, 237, 0.94)"
+    }).addTo(map)
   } else {
     straightLine.setLatLngs([selectedPointNav, lastPosition])
   };
 
 
     straightDistanceResult.innerHTML = "";
-    straightDistanceResult.innerHTML = `<p class="straightDistanceResultText">Přímá vzdálenost <em>${selectedPointNavID}</em>: <b>${straightDistanceRound} m</b></p><button class="straightDistanceResultEndBtn" id="straightDistanceResultEndBtn">X</button>`
+    straightDistanceResult.innerHTML = `<p class="straightDistanceResultText">Přímá vzdálenost <em>${selectedPointNavID}</em>: <b>${straightDistanceRound}&nbsp;m</b></p><button class="straightDistanceResultEndBtn" id="straightDistanceResultEndBtn">X</button>`
 
     const straightDistanceResultEndBtn = document.getElementById("straightDistanceResultEndBtn")
     straightDistanceResultEndBtn.addEventListener("click", ()=> {
@@ -120,12 +175,11 @@ const updateUserPosition = (lastLatLng, selectedPointNav) => {
         console.log(activeZone.properties.Location);
       } else {
         panoramaBtn.disabled = true;
-        console.log("Mimo oblasti.");
       }
 
       if (activeZone) {
-      currentZone.innerHTML = `<p>Aktuální zóna: <strong>${activeZone.properties.Location}</strong></p>`}
-      else {currentZone.innerHTML = `<p>Aktuální zóna: <strong>mimo oblast</strong></p>`}
+      currentZone.innerHTML = `<p>Zóna: <strong>${activeZone.properties.Location}</strong></p>`}
+      else {currentZone.innerHTML = `<p>Zóna: <strong>mimo oblast</strong></p>`}
       
     }
 
@@ -170,11 +224,11 @@ const pointSelect = (ID, isChecked) => {
 
 // FUNKCE - změna barvy markeru polohy uživatele podle přesnosti GPS
   const markerColorByAccuracy = (positionAccuracy) =>{
-    if(positionAccuracy <= 10) {
-      return "rgb(2, 131, 2)"
+    if(positionAccuracy <= 5) {
+      return "rgb(15, 113, 15)"
+    } else if (positionAccuracy <= 10){
+      return "rgb(255, 255, 0)"
     } else if (positionAccuracy <= 25){
-      return "rgb(54, 140, 197)"
-    } else if (positionAccuracy <= 50){
       return "rgb(255, 157, 0)"
     } else {
       return "rgb(255, 0, 0)"
@@ -187,7 +241,7 @@ const pointSelect = (ID, isChecked) => {
 const positionBtn = document.getElementById("gpsBtn");
 
 navigator.geolocation.watchPosition(position => {
-  console.log(position.coords.accuracy); // přesnost
+
 
   userLat = position.coords.latitude;
   userLng = position.coords.longitude;
@@ -308,6 +362,7 @@ fetch("Data/points/Points_WGS84.geojson")
         });
       },
 
+
       onEachFeature: (feature, layer) => {
 
         // popUp bodu
@@ -315,19 +370,24 @@ fetch("Data/points/Points_WGS84.geojson")
         const Y = p.Y * -1;
         const X = p.X * -1;
         layerID[p.ID] = layer;
-      
+
 
 
         layer.bindPopup(`
-         Číslo bodu: ${p.ID}<br>
-         X: <em>${X}</em> m<br>
-         Y: <em>${Y}</em> m<br>
-         Z: <em>${p.Z}</em> m<br>
-         Typ: ${p.typ} <br>
+         <span class="pointNumber">Číslo bodu: ${p.ID}</span><br>
+         <div class="pointInfo">X: ${X} m<br>
+         Y: ${Y} m<br>
+         Z: ${p.Z} m<br>
+         Typ: ${p.typ} <br></div>
         <button class="straightNavigationBtn" type="button">Přímá vzdálenost</button><br>
-        Vybrat bod: <input type="checkbox" class="selectChecked" onchange="pointSelect(${p.ID}, this.checked)"></input>
+        <button class="rasterNavigationBtn" type="button">Rastrová vzdálenost</button><br>
+        <label class="selectCheckbox">Vybrat bod: <input type="checkbox" class="selectChecked" onchange="pointSelect(${p.ID}, this.checked)"></input></label>
           `, { autoPan: false }
         )
+
+        layer.on("click", () => {
+          map.setView([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
+        })
 
         layer.on("popupopen", (e) => {
           const layerPopup = e.popup.getElement();
@@ -427,6 +487,58 @@ fetch("Data/points/Points_WGS84.geojson")
   });
   selectedPointsBtn.textContent = "0";
         
+
+  // MENU
+  // NAVIGACE LAYERS
+  const navLayersBtn = document.getElementById("navLayersBtn")
+  const navLayers = document.getElementById("navLayers")
+  const navLayersEndBtn = document.getElementById("navLayersEndBtn")
+
+  navLayersBtn.addEventListener("click", () => {
+    navLayers.classList.toggle("open")
+    navSupport.classList.remove("open")
+    navAboutApp.classList.remove("open")
+  })
+
+  navLayersEndBtn.addEventListener("click", ()=> {
+    navLayers.classList.remove("open")
+  })
+
+  // NAVIGACE NÁPOVĚDA
+  const navSupportBtn = document.getElementById("navSupportBtn")
+  const navSupport = document.getElementById("navSupport")
+  const navSupportEndBtn = document.getElementById("navSupportEndBtn")
+
+  navSupportBtn.addEventListener("click", () => {
+    navSupport.classList.toggle("open")
+    navSupport.scrollTo({
+      top: 0,
+    })
+    navLayers.classList.remove("open")
+    navAboutApp.classList.remove("open")
+  })
+
+  navSupportEndBtn.addEventListener("click", ()=> {
+    navSupport.classList.remove("open")
+  })
+
+
+  // NAVIGACE O APLIKACI
+  const navAboutAppBtn = document.getElementById("navAboutAppBtn")
+  const navAboutApp = document.getElementById("navAboutApp")
+  const navAboutAppEndBtn = document.getElementById("navAboutAppEndBtn")
+
+  navAboutAppBtn.addEventListener("click", () => {
+    navAboutApp.classList.toggle("open")
+    navLayers.classList.remove("open")
+    navSupport.classList.remove("open")
+  })
+
+  navAboutAppEndBtn.addEventListener("click", ()=> {
+    navAboutApp.classList.remove("open")
+  })
+
+
 
     
     

@@ -28,12 +28,14 @@ main {
 nav {
     display: flex;
     justify-content: space-evenly;
-    height: 60px;
+    height: 7vh;
     width: 100%;
     padding-bottom: env(safe-area-inset-bottom);
     display: flex;
     align-items: center;
     background: rgb(29, 29, 28);
+    position: relative;
+    z-index: 1002;
 
 }
 
@@ -68,8 +70,8 @@ nav button svg {
     flex-direction: column;
     gap: 15px;
     position: absolute;
-    top: 83%;
-    left: 3%;
+    bottom: 20px;
+    left: 20px;
 }
 
 .uiBtn {
@@ -161,7 +163,7 @@ nav button svg {
     flex-direction: column;
     position: absolute;
     z-index: 1000;
-    top: 3%;
+    top: 15px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -221,7 +223,24 @@ nav button svg {
 }
 
 .straightNavigationBtn {
-    background: yellow;
+    background: rgba(96, 155, 237, 0.94);
+    border: 2px solid rgba(0, 0, 0, 0.447);
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    width: 150px;
+    margin-bottom: 7px;
+    
+}
+
+.rasterNavigationBtn {
+    background: rgba(0, 0, 0, 0.83);
+    border: 2px solid rgba(0, 0, 0, 0.447);
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    width: 150px;
+    margin-bottom: 5px;
 }
 
 
@@ -232,8 +251,8 @@ nav button svg {
     background: #643be1c9;
     width: 35px;
     height: 35px;
-    top: 10%;
-    left: 88%;
+    top: 85px;
+    right: 15px;
     border: 2px solid #ffffffc8;
     border-radius: 5px;
     font-size: 20px;
@@ -247,14 +266,16 @@ nav button svg {
     position: absolute;
     z-index: 999;
     background: white;
-    width: auto;
-    height: 80px;
-    padding: 5px 10px 5px 10px;
-    top: 10%;
-    left: 18%;
+    min-width: 150px;
+    width: 215px;
+    height: auto;
+    padding: 10px 10px 10px 10px;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
     display: none;
     flex-direction: column;
-    border: 2px solid black; 
+    border: 1px solid rgba(0, 0, 0, 0.74); 
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
 }
@@ -307,8 +328,8 @@ nav button svg {
     background: rgba(255, 255, 255, 0.864);
     width: 35px;
     height: 35px;
-    top: 17%;
-    left: 88%;
+    top: 130px;
+    right: 15px;
     border-radius: 5px;
     border: 2px solid rgba(0, 0, 0, 0.418);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -317,9 +338,280 @@ nav button svg {
 }
 
 .selectedPointsBtn.active{
-    background: rgb(0, 254, 4);
+    background: rgb(0, 254, 4); 
     color: #0d4a87;
     border: 2px solid #0d4a87d4;
 }
 
-/* OBLASTI */
+/* POPUP */
+.leaflet-popup.leaflet-zoom-animated {
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 13px;
+    
+} /* popup okno*/
+
+.leaflet-popup-content-wrapper {
+    color: black;
+    background: rgba(255, 255, 255, 0.929);
+} /* Vnější obal obsahu popupu */
+
+.leaflet-popup-content {
+    line-height: 150%;
+    font-size: 13px;
+} /* Vnitřní obsah popupu */
+
+.pointNumber {
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.pointInfo {
+    background: rgb(255, 255, 255);
+    padding: 8px 12px 8px 12px;
+    margin: 7px 0 10px 0;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 13px;
+}
+
+.selectCheckbox {
+    display: inline-flex;
+    align-items: center;   /* vertikální zarovnání */
+    gap: 1px; 
+    font-weight: bold;
+    margin-top: 3px;
+    padding-top: 5px;
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.zones {
+    color: red;
+}
+
+
+.navLayers {
+    position: fixed;
+    z-index: 1001;
+    bottom: 7vh;
+    width: 100%;
+    height: 50vh;
+    background: white;
+    transform: translateY(150%);
+    transition: transform 0.5s ease;
+    border-radius: 15px;
+    overflow-y: auto;
+    min-height: 400px;
+    
+    
+}
+
+.navLayers.open {
+    transform: translateY(0);
+}
+
+.navLayersEndBtn {
+    position: absolute;
+    left: 89.5%;
+    top: 2.5%;
+    background: #41404028;
+    border: none;
+    font-size: 20px;
+    color: #00000075;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+    padding: 0.5px 7.5px 0.5px 7.5px;
+    border-radius: 5px;
+}
+
+
+
+.navLayersWrap {
+    height: calc(33.333333% - 20px);
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.navLayersWrap:last-child{
+    border-bottom: none;
+}
+
+.navLayersWrap p {
+    margin: 16px 0 16px 16px
+
+}
+
+.layersSelect{
+    display: flex;
+    gap: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.layerBtn {
+    position: relative;
+    height: 50px;
+    width: 50px;
+    border-radius: 10%;
+    border: none;
+}
+
+.layerBtn p {
+    position: absolute;
+    top: 100%;
+    left: 48%;
+    transform: translateX(-50%);
+    margin: 7.5px 0 0 0;
+    font-size: 12px;
+}
+
+
+.select {
+    outline: 2px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* OSM náhled */
+.layerBtn.osm {
+    background-image: url("https://a.tile.openstreetmap.org/12/2203/1384.png");
+}
+
+/* Orto náhled */
+.layerBtn.orto {
+    background-image: url("https://ags.cuzk.gov.cz/arcgis1/rest/services/ORTOFOTO_WM/MapServer/tile/12/1384/2203");
+}
+
+
+/* SUPPORT */
+.navSupport {
+    position: fixed;
+    z-index: 1001;
+    bottom: 7vh;
+    width: 100%;
+    height: calc(100vh - 7vh);
+    background: white;
+    transform: translateY(150%);
+    transition: transform 0.5s ease;
+    border-radius: 15px;
+    overflow-y: auto;
+    
+}
+
+.navSupport.open {
+    transform: translateY(0);
+}
+
+.navSupportText {
+        margin: 30px;
+}
+
+.navSupportEndBtn {
+    position: absolute;
+    left: 89.5%;
+    top: 2.5%;
+    background: #41404028;
+    border: none;
+    font-size: 20px;
+    color: #00000075;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+    padding: 0.5px 7.5px 0.5px 7.5px;
+    border-radius: 5px;
+}
+
+.supportList {
+    margin-bottom: 35px;
+    font-size: 1.2rem;
+}
+
+.supportList ol a {
+    text-decoration: none;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+
+.supportList ol a li {
+    margin-bottom: 12px;
+}
+
+
+.supportInfo .container {
+    margin-bottom: 50px;
+    border-top: 1px solid rgba(31, 30, 30, 0.2);
+}
+
+.supportInfo {
+    line-height: 1.4;
+}
+
+
+.greenText {
+    color: rgb(15, 113, 15);
+}
+
+.yellowText {
+    color: rgb(255, 255, 0);
+}
+
+.orangeText {
+    color: rgb(255, 157, 0);
+}
+
+.redText {
+    color: rgb(255, 0, 0);
+}
+
+.lightGreenText {
+    color: rgb(0, 254, 4);
+}
+
+.lightBlueText {
+    color: rgba(0, 166, 255, 0.8);
+}
+
+.blueText {
+    color: #643be1c9;
+}
+
+/* ABOUT APPLICATION */
+.navAboutApp {
+    position: fixed;
+    z-index: 1001;
+    bottom: 7vh;
+    width: 100%;
+    height: calc(100vh - 7vh);
+    background: white;
+    transform: translateY(150%);
+    transition: transform 0.5s ease;
+    border-radius: 15px;
+    overflow-y: auto;
+    
+}
+
+.navAboutApp.open {
+    transform: translateY(0);
+}
+
+.navAboutAppEndBtn {
+    position: absolute;
+    left: 89.5%;
+    top: 2.5%;
+    background: #41404028;
+    border: none;
+    font-size: 20px;
+    color: #00000075;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+    padding: 0.5px 7.5px 0.5px 7.5px;
+    border-radius: 5px;
+}
+
+.navAboutAppText {
+        margin: 30px;
+}
+
+.navAboutAppText h2 {
+        margin: 25px 0 5px 0;
+}
+
+.navAboutAppText p {
+    margin: 0;
+    line-height: 1.4;
+}

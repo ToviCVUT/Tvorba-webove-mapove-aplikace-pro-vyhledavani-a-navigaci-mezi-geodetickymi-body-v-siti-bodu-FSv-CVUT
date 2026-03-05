@@ -35,9 +35,9 @@
             <section class="information">
                 <button class="infBtn" id="infBtn" type="button">i</button>
                 <div class="infPanel" id="infPanel">
-                    <div class="currentZone" id="currentZone">Aktuální zóna: načítání...</div>
+                    <div class="currentZone" id="currentZone">Zóna: načítání...</div>
                     <div class="straightDistanceResult" id="straightDistanceResult"><p></P>Přímá vzdálenost (<em>bod</em>): --</p></div>
-                    <div class="rasterDistanceResult" id="straightDistanceResult"><p>Raster vzdálenost (<em>bod</em>): --</p></div>
+                    <div class="rasterDistanceResult" id="straightDistanceResult"><p>Rastrová vzdálenost (<em>bod</em>): --</p></div>
                     <div class="gpsAccuracy" id="gpsAccuracy"><p>GPS přesnost: načítání...</p></div>
                 </div>
             </section>
@@ -61,7 +61,7 @@
 
         <footer>
             <nav class="menu">
-                    <button class="navBtn" id="layersBtn" type="button">
+                    <button class="navBtn" id="navLayersBtn" type="button">
                         <svg viewBox="0 0 24 24" width="20" height="20">
                             <path d="M12 3 3 8l9 5 9-5-9-5Z"
                                     fill="none"
@@ -76,7 +76,7 @@
                             </svg>
                     </button>
                     
-                    <button class="navBtn" id="supportBtn" type="button">
+                    <button class="navBtn" id="navSupportBtn" type="button">
                         <svg viewBox="0 0 24 24" width="20" height="20">
                             <circle cx="12" cy="12" r="10"
                                     fill="none"
@@ -95,7 +95,7 @@
                         </svg>
                     </button>
 
-                    <button class="navBtn" id="settingsBtn" type="button">
+                    <button class="navBtn" id="navAboutAppBtn" type="button">
                         <svg viewBox="0 0 24 24" width="20" height="20">
                             <circle cx="12" cy="12" r="3"
                                     fill="none"
@@ -115,6 +115,231 @@
                         </svg>
                     </button>
             </nav>
+
+            <div class="navLayers" id="navLayers">
+                <button class="navLayersEndBtn" id="navLayersEndBtn">x</button>
+                <div class="navLayersWrap">
+                    <p>Podklady</p>
+                    <div class="layersSelect">
+                        <button class="layerBtn osm" id="layerOSMBtn">
+                            <p>OSM</p>
+                        </button>
+                        <button class="layerBtn orto" id="layerOrtoBtn">
+                            <p>ORTO</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="navLayersWrap">
+                    <p>Panoramata</p>
+                    <div class="layersSelect">
+                        <button class="layerBtn" id="panoramaMasarykBtn">
+                            <p>M</p>
+                        </button>
+                        <button class="layerBtn" id="panoramaBBtn">
+                            <p>B</p>
+                        </button>
+                        <button class="layerBtn" id="panormamaCBtn">
+                            <p>C</p>
+                        </button>  
+                        <button class="layerBtn" id="panoramaFlemmingBtn">
+                            <p>F</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="navLayersWrap">
+                    <p>Přehledky</p>
+                    <div class="layersSelect">
+                        <button class="layerBtn" id="microMasarykBtn">
+                            <p>M</p>
+                        </button>
+                        <button class="layerBtn" id="microBBtn">
+                            <p>B</p>
+                        </button>
+                        <button class="layerBtn" id="microCBtn">
+                            <p>C</p>
+                        </button> 
+                        <button class="layerBtn" id="microFlemmingBtn">
+                            <p>F</p>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="navSupport" id="navSupport">
+                <div class="navSupportText">
+                    <button class="navSupportEndBtn" id="navSupportEndBtn">x</button>
+                    <h1>Nápověda</h1>
+                    <section class="supportList">
+                        <ol>
+                            <b>
+                            <a href="#restrictions"><li>Přesnost a omezení</li></a>
+                            <a href="#mapControls"><li>Ovládání mapy</li></a>
+                            <a href="#resultsPanel"><li>Panel výsledků</li></a>
+                            <a href="#pointsSearching"><li>Vyhledávání bodů</li></a>
+                            <a href="#pointSelection"><li>Výběr bodů</li></a>
+                            <a href="#distanceMeasure"><li>Měření vzdálenosti</li></a>
+                            <a href="#userPosition"><li>Poloha uživatele</li></a>
+                            <a href="#locationPanorama"><li>Lokace a panorama</li></a>
+                            </b>
+                        </ol>
+                    </section>
+                    <section class="supportInfo">
+                        <section class="container restrictions" id="restrictions">
+                            <h2>1. Přesnost a omezení</h2>
+                            <ul>
+                                <li>přesnost polohy závisí na <b>GPS zařízení</b></li>
+                                <li>mapové podklady jsou <b>pouze orientační</b></li>
+                                <li>některé funkce jsou dostupné <b>pouze v okolí fakulty</b></li>
+                            </ul>
+                        </section>
+
+                        <section class="container mapControls" id="mapControls">
+                            <h2>2. Ovládání mapy</h2>
+                            <h3>Posun mapy</h3>
+                            <ul>
+                                <li>mapu lze posouvat <b>tažením prstu</b></li>
+                                <li>přiblížení a oddálení se provádí <b>gestem pinch nebo tlačítky +/-</b></li>
+                            </ul>
+
+                            <h3>Grafické měřítko</h3>
+                            <p>V pravém dolním rohu je zobrazeno grafické měřítko mapy, které se mění podle přiblížení mapy.</p>
+                        </section>
+
+                        <section class="container resultsPanel" id="resultsPanel">
+                            <h2>3. Panel výsledků</h2>
+                            <ul>
+                                <li>zobrazuje aktuální <b>informace o poloze uživatele, výsledcích měření a přesnosti GPS</b></li>
+                                <li>zobrazení pomocí <b><span class="blueText">modrého</span> tlačítka v pravém horním rohu mapy</b> <em>(nad tlačítkem pro výběr bodů)</em></li>
+                                <li>Lze zde pomocí tlačítka <b>zrušit měření</b>.</li>
+                            </ul>
+                        </section>
+
+
+                        <section class="container pointsSearching" id="pointsSearching">
+                            <h2>4. Vyhledávání bodů</h2>
+                            <p>V horní části aplikace se nachází <b>vyhledávací pole</b>.</p>
+                            <h3>Uživatel může:</h3>
+                            <ul>
+                                <li>zadat <b>číslo bodu</b></li>
+                                <li>vybrat bod z <b>šeptávače</b></li>
+                            </ul>
+
+                            <h3>Po výběru bodu:</h3>
+                            <ul>
+                                <li>mapa se na bod <b>přiblíží</b></li>
+                                <li>zobrazí se <b>informační okno s údaji</b></li>
+                            </ul>
+                        </section>
+
+
+                        <section class="container pointSelection" id="pointSelection">
+                            <h2>5. Výběr bodů</h2>
+                            <p>Uživatel může označit geodetické body, se kterými chce aktuálně pracovat.</p>
+
+                            <h3>Postup:</h3>
+                            <ol>
+                                <li>Klikni na bod v mapě</li>
+                                <li>V informačním okně bodu zaškrtni možnost <b>„Vybrat bod“</b></li>
+                                <li>Bod se označí <span class="lightGreenText"><b>světle zelenou barvou</b></span>.</li>
+                            </ol>
+
+                            <h3>Ovládání:</h3>
+                            <ul>
+                                <li>Vybrané body lze zobrazit samostatně pomocí <b>tlačítka pro výběr bodů v pravém horním rohu mapy</b> <em>(pod tlačítkem pro panel výsledků)</em>.</li>
+                                <li>Po kliknutí tlačítko změní barvu na <span class="lightGreenText"><b>světle zelenou</b></span> – to znamená, že je <b>aktivní a zobrazuje pouze vybrané body</b>.</li>
+                                <li>Na tlačítku se zobrazuje <b>počet aktuálně vybraných bodů</b>.</li>
+                                <li>Výběr bodu lze zrušit v informačním okně bodu <b>odškrtnutím pole „Vybrat bod“</b>.</li>
+                            </ul>
+                        </section>
+
+                        <section class="container distanceMeasure" id="distanceMeasure">
+                            <h2>6. Měření vzdálenosti</h2>
+                            <p>Aplikace umožňuje zjistit <b>vzdálenost mezi aktuální polohou uživatele a vybraným bodem</b>.</p>
+
+                            <h3>Zobrazují se dvě možnosti:</h3>
+
+                            <h4>Přímá vzdálenost</h4>
+                            <p>Vzdálenost měřená <b>přímou spojnicí mezi body</b>.</p>
+
+                            <h4>Rastrová vzdálenost</h4>
+                            <p>Vzdálenost vypočtená <b>po povrchu terénu pomocí nákladového rastru</b>.</p>
+
+                            <p>Výsledky měření se zobrazují v <b>panelu výsledků</b>, kde je lze <b>zrušit tlačítkem</b>.</p>
+                        </section>
+
+                        <section class="container userPosition" id="userPosition">
+                            <h2>7. Poloha uživatele</h2>
+                            <p>Aktuální poloha uživatele je na mapě zobrazena markerem, který <b>mění barvu podle přesnosti GPS</b>.</p>
+
+                            <h3>Barvy markeru podle přesnosti GPS:</h3>
+                            <ul>
+                                <li><span class="greenText"><b>zelená</b></span> – do 5 m</li>
+                                <li><span class="yellowText"><b>žlutá</b></span> – do 10 m</li>
+                                <li><span class="orangeText"><b>oranžová</b></span> – do 25 m</li>
+                                <li><span class="redText"><b>červená</b></span> – více než 25 m</li>
+                            </ul>
+
+                            <p>Aktuální GPS přesnost je zobrazována v panelu výsledků.</p>
+
+                            <h3>Centrace mapy na polohu uživatele:</h3>
+                            <ul>
+                                <li>tlačítko se nachází v <b>levém dolním rohu mapy</b> <em>(nad tlačítkem 360° pro panorama)</em>.</li>
+                                <li>po kliknutí se mapa <b>vycentruje na polohu uživatele</b>. Tlačítko získá <span class="lightBlueText"><b>světle modrou barvu</b></span> a mapa <b>sleduje pohyb uživatele</b>.</li>
+                                <li>posunutím mapy se centrování mapy na polohu uživatele zruší</li>
+                            </ul>
+                        </section>
+
+                        <section class="container locationPanorama" id="locationPanorama">
+                            <h2>8. Lokace a panorama</h2>
+                            <p>Území je rozděleno do <b>4 lokací v okolí fakulty FSv ČVUT</b>.</p>
+
+                            <h3>Lokace</h3>
+                            <ul>
+                                <li>M – park před Masarykovou kolejí</li>
+                                <li>B – louka před budovou C FSv ČVUT</li>
+                                <li>C – prostor před budovou B FSv ČVUT</li>
+                                <li>F – Flemingovo náměstí</li>
+                            </ul>
+
+                            <h4>Pokud se uživatel nachází v některé lokaci:</h4>
+                            <ul>
+                                <li>aplikace zobrazí <b>název aktuální lokace</b> v panelu výsledků</li>
+                                <li>zpřístupní se <b>tlačítko 360° pro panorama daného místa v levém dolním rohu mapy</b> <em>(pod tlačítkem pro centraci mapy a sledování polohy uživatele)</em></li>
+                            </ul>
+
+                            <h3>Panorama</h3>
+                            <ul>
+                                <li>umožňuje 360° pohled v dané lokaci</li>
+                                <li>tlačítko pro panorama je <b>aktivní pouze tehdy, když se uživatel nachází v lokaci</b></li>
+                                <li>panoramata jsou také <b>dostupná v dolním menu v sekci Podklady</b></li>
+                            </ul>
+                        </section>
+                    </section>
+                </div>
+            </div>
+
+
+            <div class="navAboutApp" id="navAboutApp">
+                <button class="navAboutAppEndBtn" id="navAboutAppEndBtn">x</button>
+                <div class="navAboutAppText">
+                    <h1>O aplikaci</h1>
+                    <p>Tato webová mapová aplikace byla vytvořena jako součást bakalářské práce na Fakultě stavební ČVUT v Praze.</p><br>
+                    <p>Aplikace slouží k zobrazení geodetických bodů v okolí fakulty a k výpočtu vzdálenosti od aktuální polohy uživatele.</p>
+
+                    <h2>Autor</h2>
+                    <p>Tomáš Vincenc</p>
+                    <h2>Rok</h2>
+                    <p>2026</p>
+                    <h2>Technologie</h2>
+                    <p>Leaflet, Turf.js, Flask</p>
+                    <h2>Zdroj dat</h2>
+                    <p>ČÚZK – ortofoto<br> 
+                        ZABAGED&reg;<br>
+                        OpenStreetMap
+                    </p>
+                </div>
+            </div>
         </footer>
     <script src="app.js"></script>
 </body>
