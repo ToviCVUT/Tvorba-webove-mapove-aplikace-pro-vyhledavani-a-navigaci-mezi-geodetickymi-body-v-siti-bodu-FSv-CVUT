@@ -289,22 +289,20 @@ nav button svg {
     display: flex;
     flex-direction: row;
     
-     
 }
 
-.currentZone p {
-    margin: 0;
+.rasterDistanceResult {
+    display: flex;
+    flex-direction: row;
+    
 }
+
 
 .straightDistanceResult p {
     margin: 0;
 }
 
 .rasterDistanceResult p {
-    margin: 0;
-}
-
-.gpsAccuracy p {
     margin: 0;
 }
 
@@ -320,6 +318,27 @@ nav button svg {
     
 }
 
+.rasterDistanceResultEndBtn {
+    color: red;
+    font-weight: bold;
+    font-size: 9px;
+    height: 15px;
+    width: 22px;
+    border-radius: 5px;
+    border: none;
+    margin-left: 5px;
+    
+}
+
+
+.gpsAccuracy p {
+    margin: 0;
+}
+
+
+.currentZone p {
+    margin: 0;
+}
 
 
 .selectedPointsBtn {

@@ -1,4 +1,3 @@
-
 // MAP //
 let positionMarker = null;
 let userLat = null
@@ -7,26 +6,27 @@ let lastLatLng = null;
 let centerDistance = null;
 let userFollow = false;
 
-let allPoints = {};
+let allPoints = [];
 let layerID = {}
+let selectedPointCoords = null;
+let selectedPointCoordsID = null;
+
 let straightLine = null;
-let selectedPointNav = null;
-let selectedPointNavID = null;
 let straightNavActive = false
+
+let rasterLine = null;
+let rasterNavActive = false
 
 const currentZone = document.getElementById("currentZone")
 const straightDistanceResult = document.getElementById("straightDistanceResult");
 const rasterDistanceResult = document.getElementById("rasterDistanceResult");
 const gpsAccuracy = document.getElementById("gpsAccuracy");
-infBtn = document.getElementById("infBtn")
-infPanel = document.getElementById("infPanel")
 
 
 let zones = null
 let activeZone = null;
 
 let selectedPoints = new Set()
-let selectedPointsSize = null
 let onlySelected = false
 const selectedPointsBtn = document.getElementById("selectedPointsBtn")
 
@@ -36,6 +36,10 @@ const selectedPointsBtn = document.getElementById("selectedPointsBtn")
 
 // inicializace mapy
 const map = L.map("map").setView([50.1040097, 14.3890886], 16); 
+
+// vrstvy
+map.createPane("linesPane"); 
+map.getPane("linesPane").style.zIndex = 200;
 
 // mapový podklad OSM-TOPO
 const OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -89,6 +93,123 @@ L.control.scale({
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
+ /* FLASK */
+  // FUNKCE RASTROVÁ VZDÁLENOST
+  async function getRoute(start, end) {
+    try {
+    const response = await fetch("http://127.0.0.1:5000/route", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        start: start,
+        end: end
+      })
+    });
+
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error("Backend není dostupný:", err);
+    return {
+      status: "error",
+      message: "Backend není dostupný"
+    };
+  }
+}
+
+  async function rasterRoute(start, end) {
+
+    let startCoords;
+    if (Array.isArray(start)) {
+      startCoords = start;
+    } else {
+      startCoords = [start.lat, start.lng];
+    }
+
+    let endCoords;
+    if (Array.isArray(end)) {
+      endCoords = end;
+    } else {
+      endCoords = [end.lat, end.lng];
+    }
+
+
+    const data = await getRoute(startCoords, endCoords);
+    console.log("raster:", data)
+
+
+    if (data.status !== "ok") {
+      console.error(data.message);
+      rasterDistanceResult.innerHTML = `<p>Rastrová vzdálenost: <strong>chyba</strong></p>`;
+      return;
+    }
+    
+
+    const linePoints = [startCoords, ...data.path, endCoords];
+
+    if (!rasterLine) {
+      rasterLine = L.polyline(linePoints, {
+        color: "rgba(0, 0, 0, 0.83)",
+        interactive: false,
+        pane: "linesPane",
+      }).addTo(map);
+    } else {
+      rasterLine.setLatLngs(linePoints);
+    }
+
+    rasterDistanceResult.innerHTML =
+      `<p>Rastrová vzdálenost <em>${selectedPointCoordsID}</em>: <b>${data.distance.toFixed(0)}&nbsp;m</b></p><button class="rasterDistanceResultEndBtn" id="rasterDistanceResultEndBtn">X</button>`;
+      
+    const rasterDistanceResultEndBtn = document.getElementById("rasterDistanceResultEndBtn")
+
+    rasterDistanceResultEndBtn.addEventListener("click", ()=> {
+      rasterDistanceResult.textContent = `Rastrová vzdálenost (bod): --`;
+      rasterLine.remove();
+      rasterLine = null
+      rasterNavActive = false
+      console.log(rasterNavActive)
+  })
+  };
+
+
+  //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// FUNKCE PŘÍMÁ VZDÁLENOST
+const updateUserPosition = (lastLatLng, selectedPointCoords) => {
+  if (!lastLatLng || !selectedPointCoords) return
+
+  const lastPosition = L.latLng(lastLatLng);
+  const straightDistance = lastPosition.distanceTo(selectedPointCoords);
+  console.log(straightDistance)
+
+   let straightDistanceRound = straightDistance.toFixed(0).replace(".", ",")
+  
+  if (!straightLine) {
+    straightLine = L.polyline ([selectedPointCoords, lastPosition], {
+      color: "rgba(96, 155, 237, 0.94)",
+      interactive: false,
+      pane: "linesPane",
+    }).addTo(map)
+  } else {
+    straightLine.setLatLngs([selectedPointCoords, lastPosition])
+  };
+
+
+    straightDistanceResult.innerHTML = "";
+    straightDistanceResult.innerHTML = `<p class="straightDistanceResultText">Přímá vzdálenost <em>${selectedPointCoordsID}</em>: <b>${straightDistanceRound}&nbsp;m</b></p><button class="straightDistanceResultEndBtn" id="straightDistanceResultEndBtn">X</button>`
+
+    const straightDistanceResultEndBtn = document.getElementById("straightDistanceResultEndBtn")
+    straightDistanceResultEndBtn.addEventListener("click", ()=> {
+      straightDistanceResult.textContent = `Přímá vzdálenost (bod): --`;
+      straightLine.remove();
+      straightLine = null
+      straightNavActive = false
+      console.log(straightNavActive)
+  })
+};
+
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------
 // FUNKCE ZMĚNA PODKLADU
 const switchLayers = () =>{
   mapLayer.addTo(map)
@@ -118,39 +239,6 @@ const switchLayers = () =>{
 
 switchLayers()
 
-//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-// FUNKCE AKTUALIZACE POLOHY UŽIVATELE
-const updateUserPosition = (lastLatLng, selectedPointNav) => {
-  if (!lastLatLng || !selectedPointNav) return
-
-  const lastPosition = L.latLng(lastLatLng);
-  const straightDistance = lastPosition.distanceTo(selectedPointNav);
-  console.log(straightDistance)
-
-   let straightDistanceRound = straightDistance.toFixed(0).replace(".", ",")
-  
-  if (!straightLine) {
-    straightLine = L.polyline ([selectedPointNav, lastPosition], {
-      color: "rgba(96, 155, 237, 0.94)"
-    }).addTo(map)
-  } else {
-    straightLine.setLatLngs([selectedPointNav, lastPosition])
-  };
-
-
-    straightDistanceResult.innerHTML = "";
-    straightDistanceResult.innerHTML = `<p class="straightDistanceResultText">Přímá vzdálenost <em>${selectedPointNavID}</em>: <b>${straightDistanceRound}&nbsp;m</b></p><button class="straightDistanceResultEndBtn" id="straightDistanceResultEndBtn">X</button>`
-
-    const straightDistanceResultEndBtn = document.getElementById("straightDistanceResultEndBtn")
-    straightDistanceResultEndBtn.addEventListener("click", ()=> {
-      straightDistanceResult.textContent = `Přímá vzdálenost (bod): --`;
-      straightLine.remove();
-      straightLine = null
-      straightNavActive = false
-      console.log(straightNavActive)
-  })
-};
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -168,13 +256,13 @@ const updateUserPosition = (lastLatLng, selectedPointNav) => {
         }
       })
 
-      const panoramaBtn = document.getElementById("panoramaBtn");
+      const situationBtn = document.getElementById("situationBtn");
 
       if (activeZone) {
-        panoramaBtn.disabled = false;
+        situationBtn.disabled = false;
         console.log(activeZone.properties.Location);
       } else {
-        panoramaBtn.disabled = true;
+        situationBtn.disabled = true;
       }
 
       if (activeZone) {
@@ -245,8 +333,8 @@ navigator.geolocation.watchPosition(position => {
 
   userLat = position.coords.latitude;
   userLng = position.coords.longitude;
-  positionAccuracy = position.coords.accuracy; //přesnost
-  positionAccuracyRound = positionAccuracy.toFixed(0);
+  const positionAccuracy = position.coords.accuracy; //přesnost
+  const positionAccuracyRound = positionAccuracy.toFixed(0);
 
   // poslední poloha
   lastLatLng = [userLat, userLng];
@@ -277,7 +365,12 @@ navigator.geolocation.watchPosition(position => {
 
   // infPanel - přímá vzdálenost
   if(straightNavActive){
-  updateUserPosition(lastLatLng, selectedPointNav)};
+  updateUserPosition(lastLatLng, selectedPointCoords)};
+
+  if (rasterNavActive) {
+  rasterRoute(lastLatLng, selectedPointCoords);
+}
+
 
   // infPanel - GPS přesnost
   gpsAccuracy.innerHTML = `<p>GPS přesnost: <strong>± ${positionAccuracyRound} m</strong></p>`
@@ -410,17 +503,38 @@ fetch("Data/points/Points_WGS84.geojson")
           color: "#ffffff"
             })
           }})
-  
+
+
           const straightNavBtn = layerPopup.querySelector(".straightNavigationBtn");
 
           straightNavBtn.addEventListener("click", () => {
-            selectedPointNav = e.target.getLatLng();
-            selectedPointNavID = p.ID
+            selectedPointCoords = e.target.getLatLng();
+            selectedPointCoordsID = p.ID
             straightNavActive = true
-            updateUserPosition(lastLatLng, selectedPointNav)
+            updateUserPosition(lastLatLng, selectedPointCoords)
             console.log(straightNavActive)
-          }, {once: true})
-          console.log(selectedPoints)
+          }, {once: true});
+
+  
+          const rasterNavBtn = layerPopup.querySelector(".rasterNavigationBtn");
+
+          rasterNavBtn.addEventListener("click", () => {
+            selectedPointCoords = e.target.getLatLng();
+            selectedPointCoordsID = p.ID
+            rasterNavActive = true
+
+            if (lastLatLng) {
+              rasterRoute(lastLatLng, selectedPointCoords);
+              }
+
+            console.log(rasterNavActive)
+          }, {once: true});
+
+
+          console.log(selectedPoints);
+
+
+
         })
       } 
     }) 
@@ -471,8 +585,8 @@ fetch("Data/points/Points_WGS84.geojson")
 
 
     // INFO BUTTON
-    infBtn = document.getElementById("infBtn")
-    infPanel = document.getElementById("infPanel")
+    const infBtn = document.getElementById("infBtn")
+    const infPanel = document.getElementById("infPanel")
 
     infBtn.addEventListener("click", ()=> {
       infPanel.classList.toggle("active");
@@ -538,6 +652,9 @@ fetch("Data/points/Points_WGS84.geojson")
     navAboutApp.classList.remove("open")
   })
 
+
+
+ 
 
 
     
