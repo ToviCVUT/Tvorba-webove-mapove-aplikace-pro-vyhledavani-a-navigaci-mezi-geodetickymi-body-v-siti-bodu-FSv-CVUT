@@ -521,12 +521,13 @@ nav button svg {
 
 .navSupportText {
         margin: 30px;
+        padding-top: 10px;
 }
 
 .navSupportEndBtn {
     position: absolute;
     left: 89.5%;
-    top: 2.5%;
+    top: 8%;
     background: #41404028;
     border: none;
     font-size: 20px;
@@ -612,7 +613,7 @@ nav button svg {
 .navAboutAppEndBtn {
     position: absolute;
     left: 89.5%;
-    top: 2.5%;
+    top: 8%;
     background: #41404028;
     border: none;
     font-size: 20px;
@@ -624,6 +625,7 @@ nav button svg {
 
 .navAboutAppText {
         margin: 30px;
+        padding-top: 10px;
 }
 
 .navAboutAppText h2 {

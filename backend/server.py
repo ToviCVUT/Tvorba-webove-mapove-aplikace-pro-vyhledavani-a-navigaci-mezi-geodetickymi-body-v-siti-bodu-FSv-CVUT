@@ -9,11 +9,6 @@ from skimage.graph import route_through_array
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/")
-def home():
-    return "Backend funguje"
-
-
 # RASTER
 raster = rasterio.open("CostRaster.tif")
 #print("CRS:", raster.crs)
