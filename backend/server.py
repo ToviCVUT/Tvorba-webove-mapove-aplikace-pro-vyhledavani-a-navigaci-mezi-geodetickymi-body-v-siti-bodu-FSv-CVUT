@@ -11,8 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 # RASTER
-BASE_DIR =
-os.path.dirname(os.path(__file__))
+BASE_DIR = os.path.dirname(os.path(__file__))
 raster_path = os.path.join(BASE_DIR, "CostRaster.tif")
 raster = rasterio.open(raster_path)
 #print("CRS:", raster.crs)
