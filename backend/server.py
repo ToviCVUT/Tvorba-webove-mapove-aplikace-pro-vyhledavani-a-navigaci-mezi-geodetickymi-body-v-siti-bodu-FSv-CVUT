@@ -2,15 +2,19 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import rasterio
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 from pyproj import Transformer, Geod
 from skimage.graph import route_through_array
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 # RASTER
-raster = rasterio.open("CostRaster.tif")
+BASE_DIR =
+os.path.dirname(os.path(__file__))
+raster_path = os.path.join(BASE_DIR, "CostRaster.tif")
+raster = rasterio.open(raster_path)
 #print("CRS:", raster.crs)
 #print("Width:", raster.width)
 #print("Height:", raster.height)
@@ -129,4 +133,5 @@ def route():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT",5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
