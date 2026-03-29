@@ -97,7 +97,7 @@ L.control.scale({
   // FUNKCE RASTROVÁ VZDÁLENOST
   async function getRoute(start, end) {
     try {
-    const response = await fetch("http://127.0.0.1:5000/route", {
+    const response = await fetch("https://tvorba-webove-mapove-aplikace-pro-1swy.onrender.com/route", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
