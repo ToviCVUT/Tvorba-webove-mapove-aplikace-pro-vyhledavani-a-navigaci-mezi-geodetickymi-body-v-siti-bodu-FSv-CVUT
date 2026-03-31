@@ -230,7 +230,12 @@ nav button svg {
     padding: 5px;
     width: 150px;
     margin-bottom: 7px;
+    transition: background 0.5s ease-out;
     
+}
+
+.straightNavigationBtn:active {
+    background: rgba(6, 41, 92, 0.94);
 }
 
 .rasterNavigationBtn {
@@ -241,9 +246,12 @@ nav button svg {
     padding: 5px;
     width: 150px;
     margin-bottom: 5px;
+    transition: background 0.5s ease-out;
 }
 
-
+.rasterNavigationBtn:active {
+    background: rgba(0, 0, 0, 0.5);
+}
 
 .infBtn {
     position: absolute;
@@ -259,6 +267,12 @@ nav button svg {
     font-weight: bold;
     color: white;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: background 0.1s ease-in;
+    
+}
+
+.infBtn:active {
+    background: #19035bc9;
 }
 
 
