@@ -107,15 +107,21 @@ L.control.scale({
     });
 
     const data = await response.json();
-    return data;
-  } catch (err) {
-    console.error("Backend není dostupný:", err);
-    return {
-      status: "error",
-      message: "Backend není dostupný"
-    };
+     if (!response.ok) { if (data.message === "Start je mimo raster") { 
+      throw new Error("Vaše aktuální poloha se nachází mimo podporované území aplikace."); 
+    } 
+    throw new Error(data.message || "Nepodařilo se vypočítat trasu."); 
+  } 
+  return data; 
+} catch (err) {
+   console.error("CHYBA:", err.message);
+  alert(err.message); 
+
+  return { 
+    status: "error",
+    message: err.message };
+   } 
   }
-}
 
   async function rasterRoute(start, end) {
 
