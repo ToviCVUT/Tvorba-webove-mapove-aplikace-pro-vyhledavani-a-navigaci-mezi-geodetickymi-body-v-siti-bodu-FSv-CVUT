@@ -428,13 +428,13 @@ nav button svg {
     z-index: 1001;
     bottom: 7vh;
     width: 100%;
-    height: 50vh;
+    height: 40vh;
     background: white;
     transform: translateY(150%);
     transition: transform 0.5s ease;
     border-radius: 15px;
     overflow-y: auto;
-    min-height: 400px;
+    min-height: 295px;
     
     
 }
@@ -459,7 +459,7 @@ nav button svg {
 
 
 .navLayersWrap {
-    height: calc(33.333333% - 20px);
+    height: calc(50% - 20px);
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }

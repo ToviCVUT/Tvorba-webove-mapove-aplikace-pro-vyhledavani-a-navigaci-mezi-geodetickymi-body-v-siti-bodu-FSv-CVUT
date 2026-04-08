@@ -21,6 +21,7 @@ const currentZone = document.getElementById("currentZone")
 const straightDistanceResult = document.getElementById("straightDistanceResult");
 const rasterDistanceResult = document.getElementById("rasterDistanceResult");
 const gpsAccuracy = document.getElementById("gpsAccuracy");
+let rasterOut = false
 
 
 let zones = null
@@ -108,8 +109,8 @@ L.control.scale({
 
     const data = await response.json();
      if (!response.ok) { if (data.message === "Start je mimo raster") { 
-      throw new Error("Vaše aktuální poloha se nachází mimo podporované území aplikace."); 
-    } 
+        throw new Error("Vaše aktuální poloha se nachází mimo podporované území aplikace. Navigaci pomocí rastrové vzdálenosti nelze použít.")
+      }; 
     throw new Error(data.message || "Nepodařilo se vypočítat trasu."); 
   } 
   return data; 
@@ -124,7 +125,7 @@ L.control.scale({
   }
 
   async function rasterRoute(start, end) {
-
+    
     let startCoords;
     if (Array.isArray(start)) {
       startCoords = start;
@@ -147,6 +148,8 @@ L.control.scale({
     if (data.status !== "ok") {
       console.error(data.message);
       rasterDistanceResult.innerHTML = `<p>Rastrová vzdálenost: <strong>chyba</strong></p>`;
+      rasterNavActive = false;
+      console.log(rasterNavActive)
       return;
     }
     
@@ -163,6 +166,7 @@ L.control.scale({
       rasterLine.setLatLngs(linePoints);
     }
 
+    
     rasterDistanceResult.innerHTML =
       `<p>Rastrová vzdálenost <em>${selectedPointCoordsID}</em>: <b>${data.distance.toFixed(0)}&nbsp;m</b></p><button class="rasterDistanceResultEndBtn" id="rasterDistanceResultEndBtn">X</button>`;
       
@@ -375,6 +379,7 @@ navigator.geolocation.watchPosition(position => {
 
   if (rasterNavActive) {
   rasterRoute(lastLatLng, selectedPointCoords);
+
 }
 
 
@@ -524,17 +529,23 @@ fetch("Data/points/Points_WGS84.geojson")
   
           const rasterNavBtn = layerPopup.querySelector(".rasterNavigationBtn");
 
-          rasterNavBtn.addEventListener("click", () => {
+          rasterNavBtn.addEventListener("click", async () => {
+            
+
             selectedPointCoords = e.target.getLatLng();
             selectedPointCoordsID = p.ID
             rasterNavActive = true
+            rasterNavBtn.textContent = `Probíhá výpočet...`;
+            
 
             if (lastLatLng) {
-              rasterRoute(lastLatLng, selectedPointCoords);
+              await rasterRoute(lastLatLng, selectedPointCoords);
               }
 
+            rasterNavBtn.textContent = `Rastrová vzdálenost`;
+
             console.log(rasterNavActive)
-          }, {once: true});
+          });
 
 
           console.log(selectedPoints);
