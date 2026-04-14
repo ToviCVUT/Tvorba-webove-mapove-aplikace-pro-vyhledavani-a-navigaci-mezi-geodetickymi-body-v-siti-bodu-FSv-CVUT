@@ -12,7 +12,7 @@ CORS(app)
 
 # RASTER
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-raster_path = os.path.join(BASE_DIR, "CostRaster.tif")
+raster_path = os.path.join(BASE_DIR, "CostRaster10000.tif")
 raster = rasterio.open(raster_path)
 #print("CRS:", raster.crs)
 #print("Width:", raster.width)

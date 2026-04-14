@@ -535,13 +535,13 @@ nav button svg {
 
 .navSupportText {
         margin: 30px;
-        padding-top: 10px;
+        padding-top: 15px;
 }
 
 .navSupportEndBtn {
     position: absolute;
     left: 89.5%;
-    top: 8%;
+    top: 9%;
     background: #41404028;
     border: none;
     font-size: 20px;
@@ -627,7 +627,7 @@ nav button svg {
 .navAboutAppEndBtn {
     position: absolute;
     left: 89.5%;
-    top: 8%;
+    top: 9%;
     background: #41404028;
     border: none;
     font-size: 20px;
@@ -639,7 +639,7 @@ nav button svg {
 
 .navAboutAppText {
         margin: 30px;
-        padding-top: 10px;
+        padding-top: 15px;
 }
 
 .navAboutAppText h2 {
@@ -649,4 +649,140 @@ nav button svg {
 .navAboutAppText p {
     margin: 0;
     line-height: 1.4;
+}
+
+/* M lokace */
+.MLocation {
+    position: fixed;
+    z-index: 1001;
+    bottom: 7vh;
+    width: 100%;
+    height: 50%;
+    background: white;
+    transform: translateY(150%);
+    transition: transform 0.5s ease;
+    overflow-y: auto;
+    min-height: 295px;
+}
+
+.MLocation.open {
+    transform: translateY(0);
+}
+
+.MLocationEndBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3000;
+    padding: 6px 10px;
+    font-size: 17px;
+    border-radius: 10px;
+}
+
+.MPic {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* B lokace */
+.BLocation {
+    position: fixed;
+    z-index: 1001;
+    bottom: 7vh;
+    width: 100%;
+    height: 50%;
+    background: white;
+    transform: translateY(150%);
+    transition: transform 0.5s ease;
+    overflow-y: auto;
+    min-height: 295px;
+}
+
+.BLocation.open {
+    transform: translateY(0);
+}
+
+.BLocationEndBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3000;
+    padding: 6px 10px;
+    font-size: 17px;
+    border-radius: 10px;
+}
+
+.BPic {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* B lokace */
+.CLocation {
+    position: fixed;
+    z-index: 1001;
+    bottom: 7vh;
+    width: 100%;
+    height: 50%;
+    background: white;
+    transform: translateY(150%);
+    transition: transform 0.5s ease;
+    overflow-y: auto;
+    min-height: 295px;
+}
+
+.CLocation.open {
+    transform: translateY(0);
+}
+
+.CLocationEndBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3000;
+    padding: 6px 10px;
+    font-size: 17px;
+    border-radius: 10px;
+}
+
+.CPic {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* F lokace */
+.FLocation {
+    position: fixed;
+    z-index: 1001;
+    bottom: 7vh;
+    width: 100%;
+    height: 50%;
+    background: white;
+    transform: translateY(150%);
+    transition: transform 0.5s ease;
+    overflow-y: auto;
+    min-height: 295px;
+}
+
+.FLocation.open {
+    transform: translateY(0);
+}
+
+.FLocationEndBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3000;
+    padding: 6px 10px;
+    font-size: 17px;
+    border-radius: 10px;
+}
+
+.FPic {
+    width: 100%;
+    height: auto;
+    display: block;
 }

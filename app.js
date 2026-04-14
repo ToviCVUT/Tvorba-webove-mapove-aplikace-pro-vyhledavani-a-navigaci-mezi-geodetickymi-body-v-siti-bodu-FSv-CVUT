@@ -10,6 +10,8 @@ let allPoints = [];
 let layerID = {}
 let selectedPointCoords = null;
 let selectedPointCoordsID = null;
+let choosePointID = null;
+let choosePointCoords = null;
 
 let straightLine = null;
 let straightNavActive = false
@@ -53,14 +55,15 @@ const OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   'https://ags.cuzk.gov.cz/arcgis1/rest/services/ORTOFOTO_WM/MapServer/tile/{z}/{y}/{x}',
   {
     attribution: '© ČÚZK',
-    maxZoom: 17,
-    maxNativeZoom: 17,
+    maxZoom: 18,
+    maxNativeZoom: 18,
   }
 )
 
 let mapLayer = OSM
 const osmBtn = document.getElementById("layerOSMBtn")
 const ortoBtn = document.getElementById("layerOrtoBtn")
+
 
 
 
@@ -81,7 +84,7 @@ L.control.scale({
 
 // Data
 // OBLASTI pomocí knihovny Turf
-    fetch("Data/zones/Zones_WGS84.geojson")
+    fetch("data/zones/Zones_WGS84.geojson")
       .then(res => res.json())
       .then(data => {
         zones = data
@@ -185,7 +188,7 @@ L.control.scale({
   //---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // FUNKCE PŘÍMÁ VZDÁLENOST
-const updateUserPosition = (lastLatLng, selectedPointCoords) => {
+const updateUserPosition = async (lastLatLng, selectedPointCoords) => {
   if (!lastLatLng || !selectedPointCoords) return
 
   const lastPosition = L.latLng(lastLatLng);
@@ -448,7 +451,7 @@ map.on("dragstart", () =>{
 //-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 // DATA //
-fetch("Data/points/Points_WGS84.geojson")
+fetch("data/points/Points_WGS84_CUZK.geojson")
   .then(res => res.json())
   .then(data => {
     allPoints = data.features
@@ -498,7 +501,8 @@ fetch("Data/points/Points_WGS84.geojson")
 
           // checkbox pro výběr bodu zůstane v Popup zaškrtnutý
           const checkBox = layerPopup.querySelector(".selectChecked"); 
-          checkBox.checked = selectedPoints.has(Number(p.ID));
+          checkBox.checked = selectedPoints.has(Number(p.ID))
+          
 
           checkBox.addEventListener("change", ()=> {
           if(checkBox.checked){
@@ -507,23 +511,41 @@ fetch("Data/points/Points_WGS84.geojson")
           fillColor: "rgb(0, 254, 4)",
           color:"#0d4a87"
             })
+            choosePointID = feature.properties.ID
+            choosePointCoords = feature.properties
+            console.log(choosePointCoords)
           } else {
             layer.setStyle({
             radius: 8,
           fillColor: "#0d4a87",   
           color: "#ffffff"
             })
+            if(onlySelected && straightLine){
+            straightLine.remove();
+            straightLine = null;
+            straightNavActive = false}
+            selectedPointCoordsID = null
+
+            if(onlySelected && rasterLine){
+            rasterLine.remove();
+            rasterLine = null;
+            rasterNavActive = false}
+            selectedPointCoordsID = null
           }})
+          
 
 
           const straightNavBtn = layerPopup.querySelector(".straightNavigationBtn");
 
-          straightNavBtn.addEventListener("click", () => {
+          straightNavBtn.addEventListener("click", async () => {
             selectedPointCoords = e.target.getLatLng();
             selectedPointCoordsID = p.ID
             straightNavActive = true
-            updateUserPosition(lastLatLng, selectedPointCoords)
-            console.log(straightNavActive)
+            straightNavBtn.textContent = `Probíhá výpočet...`;
+
+
+            await updateUserPosition(lastLatLng, selectedPointCoords)
+            straightNavBtn.textContent = `Přímá vzdálenost`;
           }, {once: true});
 
   
@@ -582,7 +604,7 @@ fetch("Data/points/Points_WGS84.geojson")
       const filteredPoints = allPoints.filter(point => 
         point.properties.ID.toString().toLowerCase().startsWith(inputValue))
 
-      filteredPoints.forEach(point => {
+      filteredPoints.sort((a,b) => a.properties.ID - b.properties.ID).forEach(point => {
        const filteredPoint = document.createElement("li")
         filteredPoint.textContent = point.properties.ID
         
@@ -615,6 +637,23 @@ fetch("Data/points/Points_WGS84.geojson")
     onlySelected = !onlySelected;
     renderOnlySelectedPoints();
     selectedPointsBtn.classList.toggle("active");
+
+    if(rasterNavActive && choosePointID !== selectedPointCoordsID){
+    rasterLine.remove();
+    rasterLine = null
+    rasterNavActive = false};
+
+    
+
+    if(straightNavActive && choosePointID !== selectedPointCoordsID){
+    straightLine.remove();
+    straightLine = null;
+    straightNavActive = false;
+  }
+    console.log("Test")
+    console.log(choosePointID)
+    console.log(selectedPointCoordsID)
+    console.log(choosePointID === selectedPointCoordsID);
   });
   selectedPointsBtn.textContent = "0";
         
@@ -669,6 +708,58 @@ fetch("Data/points/Points_WGS84.geojson")
     navAboutApp.classList.remove("open")
   })
 
+  // M lokace
+  const MBtn = document.getElementById("MBtn")
+  const MLocation = document.querySelector(".MLocation")
+  const MLocationEndBtn = document.querySelector(".MLocationEndBtn")
+
+  MBtn.addEventListener("click", () => {
+    MLocation.classList.add("open")
+  })
+
+  MLocationEndBtn.addEventListener("click", () => {
+      MLocation.classList.remove("open")
+  });
+
+
+  // B lokace
+  const BBtn = document.getElementById("BBtn")
+  const BLocation = document.querySelector(".BLocation")
+  const BLocationEndBtn = document.querySelector(".BLocationEndBtn")
+
+  BBtn.addEventListener("click", () => {
+    BLocation.classList.add("open")
+  })
+
+  BLocationEndBtn.addEventListener("click", () => {
+      BLocation.classList.remove("open")
+  });
+
+    // C lokace
+  const CBtn = document.getElementById("CBtn")
+  const CLocation = document.querySelector(".CLocation")
+  const CLocationEndBtn = document.querySelector(".CLocationEndBtn")
+
+  CBtn.addEventListener("click", () => {
+    CLocation.classList.add("open")
+  })
+
+  CLocationEndBtn.addEventListener("click", () => {
+      CLocation.classList.remove("open")
+  });
+
+    // F lokace
+  const FBtn = document.getElementById("FBtn")
+  const FLocation = document.querySelector(".FLocation")
+  const FLocationEndBtn = document.querySelector(".FLocationEndBtn")
+
+  FBtn.addEventListener("click", () => {
+    FLocation.classList.add("open")
+  })
+
+  FLocationEndBtn.addEventListener("click", () => {
+      FLocation.classList.remove("open")
+  });
 
 
  
