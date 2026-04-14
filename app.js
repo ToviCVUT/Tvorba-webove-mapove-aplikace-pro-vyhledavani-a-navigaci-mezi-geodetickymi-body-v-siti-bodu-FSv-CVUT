@@ -289,18 +289,23 @@ switchLayers()
 
           if(activeZone.properties.Location == "park před Masarykovou kolejí ČVUT"){
             MLocation.classList.add("open")
+            navLayers.classList.add("open")
+
           }
 
-          if(activeZone.properties.Location == "louka před budovou B FSv"){
+          if(activeZone.properties.Location == "louka před budovou B FSv ČVUT"){
             BLocation.classList.add("open")
+            navLayers.classList.add("open")
           }
 
-          if(activeZone.properties.Location == "prostor před budovou C FSv"){
+          if(activeZone.properties.Location == "prostor před budovou C FSv ČVUT"){
             CLocation.classList.add("open")
+            navLayers.classList.add("open")
           }
 
           if(activeZone.properties.Location == "Flemmingovo náměstí"){
             FLocation.classList.add("open")
+            navLayers.classList.add("open")
           }
         });
 
