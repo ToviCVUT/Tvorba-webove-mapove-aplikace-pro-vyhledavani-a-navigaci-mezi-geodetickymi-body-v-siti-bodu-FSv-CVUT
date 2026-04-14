@@ -443,17 +443,14 @@ nav button svg {
     transform: translateY(0);
 }
 
-.navLayersEndBtn {
-    position: absolute;
-    left: 89.5%;
-    top: 2.5%;
-    background: #41404028;
+#navLayersBtn.open {
+    padding: 0px;
+    background: rgb(6, 6, 6);
+    min-height: 100%;
+    min-width: 33.33%;
     border: none;
-    font-size: 20px;
-    color: #00000075;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-    padding: 0.5px 7.5px 0.5px 7.5px;
-    border-radius: 5px;
+    color: white;
+
 }
 
 
@@ -513,6 +510,31 @@ nav button svg {
     background-image: url("https://ags.cuzk.gov.cz/arcgis1/rest/services/ORTOFOTO_WM/MapServer/tile/12/1384/2203");
 }
 
+/* M náhled */
+.layerBtn.M {
+    background-image: url("data/M2.png");
+    background-size: contain;
+}
+
+/* B náhled */
+.layerBtn.B {
+    background-image: url("data/B.png");
+    background-size: contain;
+}
+
+/* C náhled */
+.layerBtn.C {
+    background-image: url("data/C.png");
+    background-size: contain;
+    
+}
+
+/* F náhled */
+.layerBtn.F {
+    background-image: url("data/F2.png");
+    background-size: contain;
+}
+
 
 /* SUPPORT */
 .navSupport {
@@ -533,23 +555,21 @@ nav button svg {
     transform: translateY(0);
 }
 
+#navSupportBtn.open {
+    padding: 0px;
+    background: rgb(6, 6, 6);
+    min-height: 100%;
+    min-width: 33.33%;
+    border: none;
+    color: white;
+
+}
+
 .navSupportText {
         margin: 30px;
         padding-top: 15px;
 }
 
-.navSupportEndBtn {
-    position: absolute;
-    left: 89.5%;
-    top: 9%;
-    background: #41404028;
-    border: none;
-    font-size: 20px;
-    color: #00000075;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-    padding: 0.5px 7.5px 0.5px 7.5px;
-    border-radius: 5px;
-}
 
 .supportList {
     margin-bottom: 35px;
@@ -624,17 +644,14 @@ nav button svg {
     transform: translateY(0);
 }
 
-.navAboutAppEndBtn {
-    position: absolute;
-    left: 89.5%;
-    top: 9%;
-    background: #41404028;
+#navAboutAppBtn.open {
+    padding: 0px;
+    background: rgb(6, 6, 6);
+    min-height: 100%;
+    min-width: 33.33%;
     border: none;
-    font-size: 20px;
-    color: #00000075;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-    padding: 0.5px 7.5px 0.5px 7.5px;
-    border-radius: 5px;
+    color: white;
+
 }
 
 .navAboutAppText {
@@ -662,22 +679,14 @@ nav button svg {
     transform: translateY(150%);
     transition: transform 0.5s ease;
     overflow-y: auto;
-    min-height: 295px;
+    border-radius: 5px 5px 0 0;
+    background-color: #000;
 }
 
 .MLocation.open {
     transform: translateY(0);
 }
 
-.MLocationEndBtn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 3000;
-    padding: 6px 10px;
-    font-size: 17px;
-    border-radius: 10px;
-}
 
 .MPic {
     width: 100%;
@@ -696,22 +705,14 @@ nav button svg {
     transform: translateY(150%);
     transition: transform 0.5s ease;
     overflow-y: auto;
-    min-height: 295px;
+    border-radius: 5px 5px 0 0; ;
+    
 }
 
 .BLocation.open {
     transform: translateY(0);
 }
 
-.BLocationEndBtn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 3000;
-    padding: 6px 10px;
-    font-size: 17px;
-    border-radius: 10px;
-}
 
 .BPic {
     width: 100%;
@@ -719,7 +720,7 @@ nav button svg {
     display: block;
 }
 
-/* B lokace */
+/* C lokace */
 .CLocation {
     position: fixed;
     z-index: 1001;
@@ -730,22 +731,14 @@ nav button svg {
     transform: translateY(150%);
     transition: transform 0.5s ease;
     overflow-y: auto;
-    min-height: 295px;
+    border-radius: 5px 5px 0 0;;
+    
 }
 
 .CLocation.open {
     transform: translateY(0);
 }
 
-.CLocationEndBtn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 3000;
-    padding: 6px 10px;
-    font-size: 17px;
-    border-radius: 10px;
-}
 
 .CPic {
     width: 100%;
@@ -764,22 +757,13 @@ nav button svg {
     transform: translateY(150%);
     transition: transform 0.5s ease;
     overflow-y: auto;
-    min-height: 295px;
+    border-radius: 5px 5px 0 0;;
 }
 
 .FLocation.open {
     transform: translateY(0);
 }
 
-.FLocationEndBtn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 3000;
-    padding: 6px 10px;
-    font-size: 17px;
-    border-radius: 10px;
-}
 
 .FPic {
     width: 100%;

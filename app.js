@@ -269,7 +269,6 @@ switchLayers()
         }
       })
 
-      const situationBtn = document.getElementById("situationBtn");
 
       if (activeZone) {
         situationBtn.disabled = false;
@@ -283,6 +282,27 @@ switchLayers()
       else {currentZone.innerHTML = `<p>Zóna: <strong>mimo oblast</strong></p>`}
       
     }
+
+    const situationBtn = document.getElementById("situationBtn");
+    situationBtn.addEventListener("click", () => {
+          if(!activeZone) return;
+
+          if(activeZone.properties.Location == "park před Masarykovou kolejí ČVUT"){
+            MLocation.classList.add("open")
+          }
+
+          if(activeZone.properties.Location == "louka před budovou B FSv"){
+            BLocation.classList.add("open")
+          }
+
+          if(activeZone.properties.Location == "prostor před budovou C FSv"){
+            CLocation.classList.add("open")
+          }
+
+          if(activeZone.properties.Location == "Flemmingovo náměstí"){
+            FLocation.classList.add("open")
+          }
+        });
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
 // FUNKCE PRO AKTULIZACI VYKRESLENÝCH BODŮ
@@ -662,62 +682,58 @@ fetch("data/points/Points_WGS84_CUZK.geojson")
   // NAVIGACE LAYERS
   const navLayersBtn = document.getElementById("navLayersBtn")
   const navLayers = document.getElementById("navLayers")
-  const navLayersEndBtn = document.getElementById("navLayersEndBtn")
 
   navLayersBtn.addEventListener("click", () => {
     navLayers.classList.toggle("open")
+    navLayersBtn.classList.toggle("open")
     navSupport.classList.remove("open")
     navAboutApp.classList.remove("open")
+    navAboutAppBtn.classList.remove("open")
+    navSupportBtn.classList.remove("open")
   })
 
-  navLayersEndBtn.addEventListener("click", ()=> {
-    navLayers.classList.remove("open")
-  })
 
   // NAVIGACE NÁPOVĚDA
   const navSupportBtn = document.getElementById("navSupportBtn")
   const navSupport = document.getElementById("navSupport")
-  const navSupportEndBtn = document.getElementById("navSupportEndBtn")
 
   navSupportBtn.addEventListener("click", () => {
     navSupport.classList.toggle("open")
+    navSupportBtn.classList.toggle("open")
     navSupport.scrollTo({
       top: 0,
     })
     navLayers.classList.remove("open")
     navAboutApp.classList.remove("open")
+    navAboutAppBtn.classList.remove("open")
+    navLayersBtn.classList.remove("open")
   })
 
-  navSupportEndBtn.addEventListener("click", ()=> {
-    navSupport.classList.remove("open")
-  })
 
 
   // NAVIGACE O APLIKACI
   const navAboutAppBtn = document.getElementById("navAboutAppBtn")
   const navAboutApp = document.getElementById("navAboutApp")
-  const navAboutAppEndBtn = document.getElementById("navAboutAppEndBtn")
 
   navAboutAppBtn.addEventListener("click", () => {
     navAboutApp.classList.toggle("open")
+    navAboutAppBtn.classList.toggle("open")
     navLayers.classList.remove("open")
     navSupport.classList.remove("open")
+    navLayersBtn.classList.remove("open")
+    navSupportBtn.classList.remove("open")
   })
 
-  navAboutAppEndBtn.addEventListener("click", ()=> {
-    navAboutApp.classList.remove("open")
-  })
 
   // M lokace
   const MBtn = document.getElementById("MBtn")
   const MLocation = document.querySelector(".MLocation")
-  const MLocationEndBtn = document.querySelector(".MLocationEndBtn")
 
   MBtn.addEventListener("click", () => {
     MLocation.classList.add("open")
   })
 
-  MLocationEndBtn.addEventListener("click", () => {
+  navLayersBtn.addEventListener("click", () => {
       MLocation.classList.remove("open")
   });
 
@@ -725,39 +741,36 @@ fetch("data/points/Points_WGS84_CUZK.geojson")
   // B lokace
   const BBtn = document.getElementById("BBtn")
   const BLocation = document.querySelector(".BLocation")
-  const BLocationEndBtn = document.querySelector(".BLocationEndBtn")
 
   BBtn.addEventListener("click", () => {
     BLocation.classList.add("open")
   })
 
-  BLocationEndBtn.addEventListener("click", () => {
+  navLayersBtn.addEventListener("click", () => {
       BLocation.classList.remove("open")
   });
 
     // C lokace
   const CBtn = document.getElementById("CBtn")
   const CLocation = document.querySelector(".CLocation")
-  const CLocationEndBtn = document.querySelector(".CLocationEndBtn")
 
   CBtn.addEventListener("click", () => {
     CLocation.classList.add("open")
   })
 
-  CLocationEndBtn.addEventListener("click", () => {
+  navLayersBtn.addEventListener("click", () => {
       CLocation.classList.remove("open")
   });
 
     // F lokace
   const FBtn = document.getElementById("FBtn")
   const FLocation = document.querySelector(".FLocation")
-  const FLocationEndBtn = document.querySelector(".FLocationEndBtn")
 
   FBtn.addEventListener("click", () => {
     FLocation.classList.add("open")
   })
 
-  FLocationEndBtn.addEventListener("click", () => {
+  navLayersBtn.addEventListener("click", () => {
       FLocation.classList.remove("open")
   });
 
