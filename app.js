@@ -736,6 +736,7 @@ fetch("data/points/Points_WGS84_CUZK.geojson")
 
   MBtn.addEventListener("click", () => {
     MLocation.classList.add("open")
+    navLayersBtn.classList.add("open")
   })
 
   navLayersBtn.addEventListener("click", () => {
@@ -749,6 +750,7 @@ fetch("data/points/Points_WGS84_CUZK.geojson")
 
   BBtn.addEventListener("click", () => {
     BLocation.classList.add("open")
+    navLayersBtn.classList.add("open")
   })
 
   navLayersBtn.addEventListener("click", () => {
@@ -761,6 +763,7 @@ fetch("data/points/Points_WGS84_CUZK.geojson")
 
   CBtn.addEventListener("click", () => {
     CLocation.classList.add("open")
+    navLayersBtn.classList.add("open")
   })
 
   navLayersBtn.addEventListener("click", () => {
@@ -773,6 +776,7 @@ fetch("data/points/Points_WGS84_CUZK.geojson")
 
   FBtn.addEventListener("click", () => {
     FLocation.classList.add("open")
+    navLayersBtn.classList.add("open")
   })
 
   navLayersBtn.addEventListener("click", () => {
