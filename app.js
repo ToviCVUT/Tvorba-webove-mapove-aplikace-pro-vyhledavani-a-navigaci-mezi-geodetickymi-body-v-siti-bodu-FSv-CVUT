@@ -150,7 +150,7 @@ L.control.scale({
 
     if (data.status !== "ok") {
       console.error(data.message);
-      rasterDistanceResult.innerHTML = `<p>Rastrová vzdálenost: <strong>chyba</strong></p>`;
+      rasterDistanceResult.innerHTML = `<p>Nákladová vzdálenost: <strong>chyba</strong></p>`;
       rasterNavActive = false;
       console.log(rasterNavActive)
       return;
@@ -171,12 +171,12 @@ L.control.scale({
 
     
     rasterDistanceResult.innerHTML =
-      `<p>Rastrová vzdálenost <em>${selectedPointCoordsID}</em>: <b>${data.distance.toFixed(0)}&nbsp;m</b></p><button class="rasterDistanceResultEndBtn" id="rasterDistanceResultEndBtn">X</button>`;
+      `<p>Nákladová vzdálenost <em>${selectedPointCoordsID}</em>: <b>${data.distance.toFixed(0)}&nbsp;m</b></p><button class="rasterDistanceResultEndBtn" id="rasterDistanceResultEndBtn">X</button>`;
       
     const rasterDistanceResultEndBtn = document.getElementById("rasterDistanceResultEndBtn")
 
     rasterDistanceResultEndBtn.addEventListener("click", ()=> {
-      rasterDistanceResult.textContent = `Rastrová vzdálenost (bod): --`;
+      rasterDistanceResult.textContent = `Nákladová vzdálenost (bod): --`;
       rasterLine.remove();
       rasterLine = null
       rasterNavActive = false
@@ -417,7 +417,7 @@ navigator.geolocation.watchPosition(position => {
 
     (err) =>{
     if(err.code === 1){
-      alert("Není povolena poloha uživatele")
+      alert("Není povolena poloha uživatele. Pro plnou funkčnost aplikace je nutné získání polohy uživatele povolit.")
     }},
 
     {
@@ -435,7 +435,7 @@ positionBtn.addEventListener("click", () => {
   map.setView(lastLatLng)
   userFollow = true;
   } else {
-    alert("Ještě nemám polohu.")
+    alert("Ještě není zjištěna poloha uživatele.")
   }
 });
 
@@ -512,7 +512,7 @@ fetch("data/points/Points_WGS84_CUZK.geojson")
          Z: ${p.Z} m<br>
          Typ: ${p.typ} <br></div>
         <button class="straightNavigationBtn" type="button">Přímá vzdálenost</button><br>
-        <button class="rasterNavigationBtn" type="button">Rastrová vzdálenost</button><br>
+        <button class="rasterNavigationBtn" type="button">Nákladová vzdálenost</button><br>
         <label class="selectCheckbox">Vybrat bod: <input type="checkbox" class="selectChecked" onchange="pointSelect(${p.ID}, this.checked)"></input></label>
           `, { autoPan: false }
         )
@@ -589,7 +589,7 @@ fetch("data/points/Points_WGS84_CUZK.geojson")
               await rasterRoute(lastLatLng, selectedPointCoords);
               }
 
-            rasterNavBtn.textContent = `Rastrová vzdálenost`;
+            rasterNavBtn.textContent = `Nákladová vzdálenost`;
 
             console.log(rasterNavActive)
           });
